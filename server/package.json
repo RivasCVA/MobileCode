@@ -8,8 +8,7 @@
     "lint": "eslint src --ext .ts,.js",
     "prettier": "prettier --check \"src/**/*.{ts,js}\"",
     "start:prod": "export DEBUG=server && node -r module-alias/register dist/index.js",
-    "build:prod": "tsc",
-    "test": "npm run lint && npm run prettier"
+    "build:prod": "tsc"
   },
   "_moduleAliases": {
     "@root": "dist"
