@@ -1,0 +1,11 @@
+{
+  "name": "mobile-code-client",
+  "version": "1.0.0",
+  "description": "A mobile platform to prepare for technical coding interviews.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Carlos Rivas",
+  "license": "ISC"
+}
