@@ -4,15 +4,27 @@
   "description": "A mobile platform to prepare for technical coding interviews.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "nodemon --watch \"src/**/*\" --ext \"ts,js\" --exec \"export DEBUG=server && ts-node -r tsconfig-paths/register src/index.ts\"",
+    "lint": "eslint src --ext .ts,.js",
+    "prettier": "prettier --check \"src/**/*.{ts,js}\"",
+    "start:prod": "export DEBUG=server && node -r module-alias/register dist/index.js",
+    "build:prod": "tsc",
+    "test": "npm run lint && npm run prettier"
+  },
+  "_moduleAliases": {
+    "@root": "dist"
   },
   "author": "Carlos Rivas",
   "license": "ISC",
   "dependencies": {
+    "debug": "^4.3.2",
     "express": "^4.17.1",
-    "ts-node": "^10.4.0"
+    "module-alias": "^2.2.2",
+    "ts-node": "^10.4.0",
+    "tsconfig-paths": "^3.11.0"
   },
   "devDependencies": {
+    "@types/debug": "^4.1.7",
     "@types/express": "^4.17.13",
     "@types/node": "^16.11.6",
     "@typescript-eslint/eslint-plugin": "^5.2.0",
@@ -20,8 +32,10 @@
     "eslint": "^7.32.0",
     "eslint-config-airbnb-base": "^14.2.1",
     "eslint-config-prettier": "^8.3.0",
+    "eslint-import-resolver-typescript": "^2.5.0",
     "eslint-plugin-import": "^2.25.2",
     "eslint-plugin-prettier": "^4.0.0",
+    "nodemon": "^2.0.14",
     "prettier": "^2.4.1",
     "typescript": "^4.4.4"
   }

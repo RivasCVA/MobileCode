@@ -16,7 +16,13 @@
         "@typescript-eslint",
         "prettier"
     ],
+    "settings": {
+        "import/resolver": {
+            "typescript": {}
+        }
+    },
     "rules": {
         "prettier/prettier": ["error"]
-    }
+    },
+    "ignorePatterns": ["node_modules", "dist"]
 }

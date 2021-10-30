@@ -1,12 +1,14 @@
 {
     "compilerOptions": {
         "module": "commonjs",
+        "moduleResolution": "node",
         "target": "es6",
         "rootDir": "src",
-        "outDir": "public",
-        "esModuleInterop": true
+        "outDir": "dist",
+        "esModuleInterop": true,
+        "baseUrl": "src",
+        "paths": {
+            "@root/*": ["*"]
+        }
     },
-    "include": [
-        "src"
-    ]
 }
