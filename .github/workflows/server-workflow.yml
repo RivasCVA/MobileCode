@@ -1,0 +1,41 @@
+name: Server Workflow
+
+# Controls when the action will run. 
+on:
+  # Triggers the workflow on push or pull request events but only for the master branch
+  push:
+    paths: [ 'server/**' ]
+    branches: [ master ]
+  pull_request:
+    paths: [ 'server/**' ]
+    branches: [ master ]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This is the first job
+  check-server-style-format:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v2
+
+      # Installs npm modules
+      - name: Install
+        working-directory: ./server
+        run: npm install
+
+      # Runs eslint check
+      - name: Eslint
+        working-directory: ./server
+        run: npm run lint
+      
+      # Runs prettier check
+      - name: Prettier
+        working-directory: ./server
+        run: npm run prettier
