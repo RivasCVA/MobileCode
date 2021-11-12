@@ -1,13 +1,13 @@
 import express from 'express';
 import Debug from '@root/util/debug';
-import run from '@root/routes/run';
+import test from '@root/routes/test';
 
 const PORT = 3000;
 const app = express();
 
 app.use(express.json());
 
-app.use('/api/run', run);
+app.use('/api/test', test);
 
 app.get('/', (_, res) => {
     res.send('Welcome to the Mobile Code API');

@@ -22,7 +22,8 @@
         }
     },
     "rules": {
-        "prettier/prettier": ["error"]
+        "prettier/prettier": ["error"],
+        "no-use-before-define": ["error", { "variables": false }]
     },
     "ignorePatterns": ["node_modules", "dist"]
 }

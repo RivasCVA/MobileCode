@@ -11,7 +11,7 @@ const TIMEOUT = 5000;
  * @param command Command to run.
  * @returns A promise object resolving the standard output.
  */
-const exec = (command: string) =>
+const exec = (command: string): Promise<string> =>
     new Promise<string>((resolve, reject) => {
         childProcess.exec(command, { timeout: TIMEOUT }, (error, stdout, stderr) => {
             if (error) {
@@ -19,7 +19,7 @@ const exec = (command: string) =>
             } else if (stdout) {
                 resolve(stdout);
             } else {
-                reject(stderr);
+                resolve(stderr);
             }
         });
     });
