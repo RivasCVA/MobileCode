@@ -3,7 +3,6 @@
  */
 class UTest {
     /**
-     * 
      * @param {any} input Solution input.
      * @param {any} output Solution output.
      * @param {any} expected Expected solution output.
