@@ -13,11 +13,11 @@ const router = express.Router();
  */
 const LanguageSupport = {
     python: {
-        getCommand: (filePath: string) => `python3 ${filePath}`,
+        testCommand: (filePath: string) => `python3 ${filePath}`,
         fileExtension: '.py',
     },
     javascript: {
-        getCommand: (filePath: string) => `node ${filePath}`,
+        testCommand: (filePath: string) => `node ${filePath}`,
         fileExtension: '.js',
     },
 };
@@ -49,6 +49,12 @@ router.post('/', async (req, res) => {
         `../problems/${problem}/test${languageSupport.fileExtension}`
     );
 
+    // File with the unit test functionality
+    const unitTestFilePath = path.join(
+        __dirname,
+        `../problems/${problem}/utest${languageSupport.fileExtension}`
+    );
+
     // Directory to host all test files
     const cacheDirectoryPath = path.join(__dirname, `../cache/${user}-${problem}`);
 
@@ -58,9 +64,12 @@ router.post('/', async (req, res) => {
         const userCodePath = `${cacheDirectoryPath}/solution${languageSupport.fileExtension}`;
         const testCode = await readFile(testFilePath);
         const testCodePath = `${cacheDirectoryPath}/test${languageSupport.fileExtension}`;
+        const unitTestCode = await readFile(unitTestFilePath);
+        const unitTestCodePath = `${cacheDirectoryPath}/utest${languageSupport.fileExtension}`;
         await writeFile(userCodePath, userCode);
         await writeFile(testCodePath, testCode);
-        const stdout = await exec(languageSupport.getCommand(testCodePath));
+        await writeFile(unitTestCodePath, unitTestCode);
+        const stdout = await exec(languageSupport.testCommand(testCodePath));
         res.status(StatusCodes.OK).send(stdout);
     } catch (error) {
         res.status(StatusCodes.BAD_REQUEST).send(error);
