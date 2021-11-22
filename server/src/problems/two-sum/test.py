@@ -12,17 +12,24 @@ class Test:
             "array": [3, 5, -4, 8, 11, 1, -1, 6],
             "target": 10
         }
-        output = self.solution.two_sum(input["array"], input["target"])
         expected = [11, -1]
 
+        # Act
+        u_test = UTest(1)
+        u_test.start_stdout()
+        u_test.start_runtime()
+        output = self.solution.two_sum(input["array"], input["target"])
+        u_test.stop_runtime()
+        u_test.stop_stdout()
+        u_test.fill(input, output, expected)
+
         # Assert
-        u_test = UTest(input, output, expected)
         u_test.assert_condition(len(output) == 2)
         for num in expected:
             u_test.assert_condition(num in output)
 
         # Return
-        return u_test.get_object(1)
+        return u_test.get_object()
 
     def case_2(self):
         # Arrange
@@ -30,17 +37,24 @@ class Test:
             "array": [4, 6],
             "target": 10
         }
-        output = self.solution.two_sum(input["array"], input["target"])
         expected = [4, 6]
 
+        # Act
+        u_test = UTest(2)
+        u_test.start_stdout()
+        u_test.start_runtime()
+        output = self.solution.two_sum(input["array"], input["target"])
+        u_test.stop_runtime()
+        u_test.stop_stdout()
+        u_test.fill(input, output, expected)
+
         # Assert
-        u_test = UTest(input, output, expected)
         u_test.assert_condition(len(output) == 2)
         for num in expected:
             u_test.assert_condition(num in output)
 
         # Return
-        return u_test.get_object(2)
+        return u_test.get_object()
     
     def run(self):
         return json.dumps([
