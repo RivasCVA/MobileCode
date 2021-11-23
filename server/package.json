@@ -4,7 +4,9 @@
   "description": "A mobile platform to prepare for technical coding interviews.",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon --watch \"src/**/*\" --ignore \"src/cache/**/*\" --ext \"ts,js\" --exec \"export DEBUG=server && ts-node -r tsconfig-paths/register src/index.ts\"",
+    "start": "echo \"starting cache...\" && npm run start:cache && echo \"starting nodemon...\" && npm run start:nodemon",
+    "start:nodemon": "nodemon --watch \"src/**/*\" --ignore \"src/cache/**/*\" --ext \"ts,js\" --exec \"export DEBUG=server && ts-node -r tsconfig-paths/register src/index.ts\"",
+    "start:cache": "rm -rf src/cache && mkdir src/cache",
     "lint": "eslint src --ext .ts,.js",
     "prettier": "prettier --check \"src/**/*.{ts,js}\"",
     "start:prod": "export DEBUG=server && node -r module-alias/register dist/index.js",
