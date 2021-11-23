@@ -16,12 +16,12 @@ class Test:
 
         # Act
         u_test = UTest(1)
-        u_test.start_stdout()
-        u_test.start_runtime()
+        u_test.start_reading_STDOUT()
+        u_test.start_runtime_counter()
         output = self.solution.two_sum(input["array"], input["target"])
-        u_test.stop_runtime()
-        u_test.stop_stdout()
-        u_test.fill(input, output, expected)
+        u_test.stop_runtime_counter()
+        u_test.stop_reading_STDOUT()
+        u_test.add_IO(input, output, expected)
 
         # Assert
         u_test.assert_condition(len(output) == 2)
@@ -41,12 +41,12 @@ class Test:
 
         # Act
         u_test = UTest(2)
-        u_test.start_stdout()
-        u_test.start_runtime()
+        u_test.start_reading_STDOUT()
+        u_test.start_runtime_counter()
         output = self.solution.two_sum(input["array"], input["target"])
-        u_test.stop_runtime()
-        u_test.stop_stdout()
-        u_test.fill(input, output, expected)
+        u_test.stop_runtime_counter()
+        u_test.stop_reading_STDOUT()
+        u_test.add_IO(input, output, expected)
 
         # Assert
         u_test.assert_condition(len(output) == 2)

@@ -25,9 +25,9 @@ class UTest:
         self.__new_stdout: StringIO = None
         self.__runtime_start: float = None
     
-    def fill(self, input: Any, output: Any, expected: Any) -> None:
+    def add_IO(self, input: Any, output: Any, expected: Any) -> None:
         """
-        Fills the unit test with supporting data.
+        Stores the resulting input and output of the tested solution.
 
         Args:
             input (Any): Solution input.
@@ -48,42 +48,50 @@ class UTest:
         if self.result == None or self.result == True:
             self.result = condition
     
-    def start_stdout(self) -> None:
+    def start_reading_STDOUT(self) -> None:
         """
         Starts reading the standard output.
         """
-        if self.stdout != None or self.__old_stdout != None or self.__new_stdout != None:
-            raise RuntimeError("Cannot start stdout read more than once.")
+        if self.stdout != None:
+            raise RuntimeError("Cannot start reading stdout more than once.")
+        
+        if self.__old_stdout != None or self.__new_stdout != None:
+            raise RuntimeError("Must stop reading stdout before starting.")
 
         self.__old_stdout = sys.stdout
         self.__new_stdout = StringIO()
         sys.stdout = self.__new_stdout
 
-    def stop_stdout(self) -> None:
+    def stop_reading_STDOUT(self) -> None:
         """
         Stops reading the standard output.
         """
         if self.stdout != None:
-            raise RuntimeError("Cannot stop stdout read more than once.")
+            raise RuntimeError("Cannot stop reading stdout more than once.")
 
         if self.__old_stdout == None or self.__new_stdout == None:
-            raise RuntimeError("Must start stdout read before stopping.")
+            raise RuntimeError("Must start reading stdout before stopping.")
 
         self.stdout = self.__new_stdout.getvalue()
         sys.stdout = self.__old_stdout
     
-    def start_runtime(self) -> None:
+    def start_runtime_counter(self) -> None:
         """
         Starts the runtime counter.
+        The runtime is collected in milliseconds (ms).
         """
-        if self.runtime != None or self.__runtime_start != None:
+        if self.runtime != None:
             raise RuntimeError("Cannot start runtime counter more than once.")
+        
+        if self.__runtime_start != None:
+            raise RuntimeError("Must stop runtime counter before starting.")
         
         self.__runtime_start = time.time() * 1000
 
-    def stop_runtime(self) -> None:
+    def stop_runtime_counter(self) -> None:
         """
         Stops the runtime counter.
+        The runtime is collected in milliseconds (ms).
         """
         if self.runtime != None:
             raise RuntimeError("Cannot stop runtime counter more than once.")
