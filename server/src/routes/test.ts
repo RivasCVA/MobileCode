@@ -3,7 +3,7 @@ import path from 'path';
 import { StatusCodes } from 'http-status-codes';
 import exec from '@root/util/exec';
 import { writeFile, deleteFile, readFile, createDirectory } from '@root/util/fileman';
-import { stringToCode } from '@root/util/parse';
+import { stringToCode } from '@root/util/cparse';
 import { LanguageSupport } from '@root/util/language';
 
 const router = express.Router();

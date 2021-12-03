@@ -18,6 +18,6 @@ export const codeToString = (code: string): string => {
 export const stringToCode = (str: string): string => {
     let code = str;
     code = code.replace(new RegExp('\\"', 'g'), '"');
-    code = code.replace(new RegExp('\\\\n', 'g'), '\n');
+    code = code.replace(new RegExp('\\n', 'g'), '\n');
     return code;
 };
