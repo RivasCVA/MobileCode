@@ -4,27 +4,11 @@ import { StatusCodes } from 'http-status-codes';
 import exec from '@root/util/exec';
 import { writeFile, deleteFile, readFile, createDirectory } from '@root/util/fileman';
 import { stringToCode } from '@root/util/parse';
+import { LanguageSupport } from '@root/util/language';
 
 const router = express.Router();
 
-/**
- * Offers language-specific support for executing code.
- * All languages listed here are the only supported languages.
- */
-const LanguageSupport = {
-    python: {
-        testCommand: (filePath: string) => `python3 ${filePath}`,
-        fileExtension: '.py',
-    },
-    javascript: {
-        testCommand: (filePath: string) => `node ${filePath}`,
-        fileExtension: '.js',
-    },
-};
-
-/**
- * Type-matching the default Test POST request.
- */
+/** Type-matching the default Test POST request. */
 interface DefaultPostRequest {
     user: string;
     problem: string;
@@ -72,7 +56,9 @@ router.post('/', async (req, res) => {
         const stdout = await exec(languageSupport.testCommand(testCodePath));
         res.status(StatusCodes.OK).send(stdout);
     } catch (error) {
-        res.status(StatusCodes.BAD_REQUEST).send(error);
+        res.status(StatusCodes.BAD_REQUEST).send(
+            JSON.stringify(languageSupport.filterError(error))
+        );
     }
 
     await deleteFile(cacheDirectoryPath);
