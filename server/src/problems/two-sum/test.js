@@ -68,4 +68,11 @@ class Test {
     }
 }
 
-console.log(new Test().run());
+if (require.main === module) {
+    try {
+        console.log(new Test().run());
+    } catch (error) {
+        // Automatically prints error message
+        process.exit(1);
+    }
+}

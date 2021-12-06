@@ -1,6 +1,7 @@
 from utest import UTest
 from solution import Solution
 import json
+import sys
 
 class Test:
     def __init__(self):
@@ -63,4 +64,8 @@ class Test:
         ])
 
 if __name__ == "__main__":
-    print(Test().run())
+    try:
+        print(Test().run())
+    except:
+        # Automatically prints error message
+        sys.exit(1)

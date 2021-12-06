@@ -4,11 +4,10 @@ public class Test {
     private Solution solution = new Solution();
 
     public static void main(String args[]) {
-        Test test = new Test();
         try {
-            System.out.println(test.run());
+            System.out.println((new Test()).run());
         } catch (Exception e) {
-            System.err.println(e.getMessage());
+            // Automatically prints error message
             System.exit(1);
         }
     }

@@ -86,6 +86,23 @@ export const LanguageSupport = {
         testFileName: 'Test.java',
         unitTestFileName: 'UTest.java',
         solutionFileName: 'Solution.java',
-        filterError: (message: string) => message,
+        filterError: (message: string): LanguageError => {
+            const result: LanguageError = { line: -1, message };
+            // Check if the error can be filtered
+            message.includes('error:');
+            const startIndex = message.indexOf('error:');
+            if (startIndex === -1) {
+                return result;
+            }
+            const endIndex = message.substr(startIndex + 5).indexOf('^');
+            const lineNumber = parseInt(message.substr(0, startIndex).replace(/[^0-9]/g, ''), 10);
+            if (Number.isNaN(lineNumber)) {
+                return result;
+            }
+            // Filter the error
+            result.line = lineNumber;
+            result.message = message.substr(startIndex + 5, endIndex !== -1 ? endIndex : undefined);
+            return result;
+        },
     },
 };
