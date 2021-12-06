@@ -8,7 +8,7 @@ import { LanguageSupport } from '@root/util/language';
 
 const router = express.Router();
 
-/** Type-matching the default Test POST request. */
+/** A JSON response interface for the Test POST request. */
 interface DefaultPostRequest {
     user: string;
     problem: string;
@@ -30,26 +30,25 @@ router.post('/', async (req, res) => {
     // File with the test cases
     const testFilePath = path.join(
         __dirname,
-        `../problems/${problem}/test${languageSupport.fileExtension}`
+        `../problems/${problem}/${languageSupport.testFileName}`
     );
 
     // File with the unit test functionality
     const unitTestFilePath = path.join(
         __dirname,
-        `../problems/${problem}/utest${languageSupport.fileExtension}`
+        `../problems/${problem}/${languageSupport.unitTestFileName}`
     );
 
     // Directory to host all test files
     const cacheDirectoryPath = path.join(__dirname, `../cache/${user}-${problem}`);
-
     try {
         await createDirectory(cacheDirectoryPath);
         const userCode = stringToCode(code);
-        const userCodePath = `${cacheDirectoryPath}/solution${languageSupport.fileExtension}`;
+        const userCodePath = `${cacheDirectoryPath}/${languageSupport.solutionFileName}`;
         const testCode = await readFile(testFilePath);
-        const testCodePath = `${cacheDirectoryPath}/test${languageSupport.fileExtension}`;
+        const testCodePath = `${cacheDirectoryPath}/${languageSupport.testFileName}`;
         const unitTestCode = await readFile(unitTestFilePath);
-        const unitTestCodePath = `${cacheDirectoryPath}/utest${languageSupport.fileExtension}`;
+        const unitTestCodePath = `${cacheDirectoryPath}/${languageSupport.unitTestFileName}`;
         await writeFile(userCodePath, userCode);
         await writeFile(testCodePath, testCode);
         await writeFile(unitTestCodePath, unitTestCode);

@@ -51,6 +51,7 @@ class UTest:
     def start_reading_STDOUT(self) -> None:
         """
         Starts reading the standard output.
+        This overrides `print`.
         """
         if self.stdout != None:
             raise RuntimeError("Cannot start reading stdout more than once.")
@@ -65,6 +66,7 @@ class UTest:
     def stop_reading_STDOUT(self) -> None:
         """
         Stops reading the standard output.
+        This returns `print` to its original state.
         """
         if self.stdout != None:
             raise RuntimeError("Cannot stop reading stdout more than once.")

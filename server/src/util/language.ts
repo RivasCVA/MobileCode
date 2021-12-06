@@ -1,4 +1,4 @@
-/** Type-matching the JSON error response on a language runtime error. */
+/** A JSON response interface for a solution test runtime error. */
 export interface LanguageError {
     line: number;
     message: string;
@@ -10,8 +10,11 @@ export interface LanguageError {
  */
 export const LanguageSupport = {
     python: {
-        testCommand: (filePath: string) => `python3 ${filePath}`,
+        testCommand: (filePath: string): string => `python3 ${filePath}`,
         fileExtension: '.py',
+        testFileName: 'test.py',
+        unitTestFileName: 'utest.py',
+        solutionFileName: 'solution.py',
         filterError: (message: string): LanguageError => {
             const result: LanguageError = { line: -1, message };
             // Check if error can be filtered
@@ -37,8 +40,11 @@ export const LanguageSupport = {
         },
     },
     javascript: {
-        testCommand: (filePath: string) => `node ${filePath}`,
+        testCommand: (filePath: string): string => `node ${filePath}`,
         fileExtension: '.js',
+        testFileName: 'test.js',
+        unitTestFileName: 'utest.js',
+        solutionFileName: 'solution.js',
         filterError: (message: string): LanguageError => {
             const result: LanguageError = { line: -1, message };
             // Check if the error can be filtered
@@ -62,5 +68,24 @@ export const LanguageSupport = {
             });
             return result;
         },
+    },
+    java: {
+        testCommand: (filePath: string): string => {
+            const { java } = LanguageSupport;
+            const directoryPath = filePath.replace(java.testFileName, '');
+            const javaFileNames = [java.solutionFileName, java.unitTestFileName, java.testFileName];
+            const classFileName = java.testFileName.replace(java.fileExtension, '');
+            const commands: string[] = [];
+            commands.push(`cd ${directoryPath}`);
+            commands.push(`javac ${javaFileNames.join(' ')}`);
+            commands.push(`java ${classFileName}`);
+            commands.push('cd');
+            return commands.join(' && ');
+        },
+        fileExtension: '.java',
+        testFileName: 'Test.java',
+        unitTestFileName: 'UTest.java',
+        solutionFileName: 'Solution.java',
+        filterError: (message: string) => message,
     },
 };

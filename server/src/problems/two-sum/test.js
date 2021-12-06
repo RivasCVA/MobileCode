@@ -23,7 +23,7 @@ class Test {
         uTest.stopReadingSTDOUT();
         uTest.addIO(input, output, expected);
 
-        // Assert=
+        // Assert
         uTest.assert(output.length === 2);
         for (const num of expected) {
             uTest.assert(output.includes(num));
