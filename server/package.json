@@ -23,12 +23,9 @@
   "jest": {
     "preset": "ts-jest",
     "testEnvironment": "node",
-    "testPathIgnorePatterns": [
-      "node_modules"
-    ],
-    "testMatch": [
-      "**/__tests__/**/*.[jt]s?(x)"
-    ]
+    "testPathIgnorePatterns": ["node_modules"],
+    "testMatch": ["**/__tests__/**/*.[jt]s?(x)"],
+    "moduleNameMapper": {"^@root/(.*)$": "<rootDir>/src/$1"}
   },
   "author": "Carlos Rivas",
   "license": "ISC",
