@@ -23,10 +23,19 @@
   "jest": {
     "preset": "ts-jest",
     "testEnvironment": "node",
-    "testPathIgnorePatterns": ["node_modules"],
-    "testMatch": ["**/__tests__/**/*.[jt]s?(x)"],
-    "moduleNameMapper": {"^@root/(.*)$": "<rootDir>/src/$1"}
+    "testPathIgnorePatterns": [
+      "node_modules"
+    ],
+    "testMatch": [
+      "**/__tests__/**/*.[jt]s?(x)"
+    ],
+    "moduleNameMapper": {
+      "^@root/(.*)$": "<rootDir>/src/$1"
+    }
   },
+  "pre-commit": [
+    "test"
+  ],
   "author": "Carlos Rivas",
   "license": "ISC",
   "dependencies": {
@@ -54,6 +63,7 @@
     "eslint-plugin-prettier": "^4.0.0",
     "jest": "^27.4.5",
     "nodemon": "^2.0.14",
+    "pre-commit": "^1.2.2",
     "prettier": "^2.4.1",
     "supertest": "^6.1.6",
     "ts-jest": "^27.1.2",
