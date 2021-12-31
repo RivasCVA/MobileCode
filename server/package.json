@@ -7,15 +7,17 @@
     "start": "echo \"starting in development...\" && npm run dev:cache && npm run dev:nodemon",
     "start:prod": "echo \"starting in production\" && npm run prod:build && npm run prod:node",
     "dev:cache": "rm -rf src/cache && mkdir src/cache",
-    "dev:nodemon": "nodemon --watch \"src/**/*\" --ignore \"src/cache/**/*\" --ext \"*\" --exec \"export DEBUG=server && ts-node -r tsconfig-paths/register src/index.ts\"",
+    "dev:nodemon": "nodemon --watch \"src/**/*\" --ignore \"src/cache/**/*\" --ext \"*\" --exec \"export DEBUG=server,db && ts-node -r tsconfig-paths/register src/index.ts\"",
     "prod:build": "rm -rf dist && tsc && npm run prod:copy && npm run prod:cache",
     "prod:copy": "cp -r src/problems dist",
     "prod:cache": "rm -rf dist/cache && mkdir dist/cache",
-    "prod:node": "export DEBUG=server && node -r module-alias/register dist/index.js",
+    "prod:node": "export DEBUG=server,db && node -r module-alias/register dist/index.js",
     "lint": "eslint src --ext .ts,.js",
     "prettier": "prettier --check \"src/**/*.{ts,js}\"",
     "test": "jest src",
-    "test:prod": "jest dist"
+    "test:prod": "jest dist",
+    "start-mongo-mac": "brew services start mongodb-community",
+    "stop-mongo-mac": "brew services stop mongodb-community"
   },
   "_moduleAliases": {
     "@root": "dist"
@@ -37,9 +39,11 @@
   "license": "ISC",
   "dependencies": {
     "debug": "^4.3.2",
+    "dotenv": "^10.0.0",
     "express": "^4.17.1",
     "http-status-codes": "^2.1.4",
     "module-alias": "^2.2.2",
+    "mongoose": "^6.1.4",
     "ts-node": "^10.4.0",
     "tsconfig-paths": "^3.11.0"
   },
