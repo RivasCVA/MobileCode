@@ -1,6 +1,10 @@
 const Solution = require('./solution');
 const UTest = require('./utest');
 
+/**
+ * The class responsible for testing the user's solution.
+ * This file should be executed to test a javascript solution.
+ **/
 class Test {
     constructor() {
         this.solution = new Solution();

@@ -4,6 +4,11 @@ import json
 import sys
 
 class Test:
+    """
+    The class responsible for testing the user's solution.
+    This file should be executed to test a python solution.
+    """
+
     def __init__(self):
         self.solution = Solution()
 

@@ -43,16 +43,23 @@ router.post('/', async (req, res) => {
     const cacheDirectoryPath = path.join(__dirname, `../cache/${user}-${problem}`);
 
     try {
+        // Create the user-problem directory to hold all test files
         await createDirectory(cacheDirectoryPath);
+
+        // Gather all the code to be run
         const userCode = stringToCode(code);
         const userCodePath = `${cacheDirectoryPath}/${languageManager.getSolutionFileName()}`;
         const testCode = await readFile(testFilePath);
         const testCodePath = `${cacheDirectoryPath}/${languageManager.getTestFileName()}`;
         const unitTestCode = await readFile(unitTestFilePath);
         const unitTestCodePath = `${cacheDirectoryPath}/${languageManager.getUnitTestFileName()}`;
+
+        // Paste all the code into the user-problem directory
         await writeFile(userCodePath, userCode);
         await writeFile(testCodePath, testCode);
         await writeFile(unitTestCodePath, unitTestCode);
+
+        // Exec the code
         const stdout = await exec(languageManager.getTestCommand(testCodePath));
         res.status(StatusCodes.OK).send(stdout);
     } catch (error) {
@@ -61,6 +68,7 @@ router.post('/', async (req, res) => {
         );
     }
 
+    // Remove the user-problem directory
     await deleteFile(cacheDirectoryPath);
 });
 

@@ -1,5 +1,9 @@
 import java.util.ArrayList;
 
+/**
+ * The class responsible for testing the user's solution.
+ * This file should be executed to test a java solution.
+ **/
 public class Test {
     private Solution solution = new Solution();
 
