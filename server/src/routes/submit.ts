@@ -5,27 +5,20 @@ import exec from '@root/util/exec';
 import { writeFile, deleteFile, readFile, createDirectory } from '@root/util/fileman';
 import { stringToCode } from '@root/util/cparse';
 import { LanguageManager } from '@root/util/language';
+import * as Submission from '@root/models/submission';
 
 const router = express.Router();
 
-/** A JSON response interface for the Test POST request. */
-interface DefaultPostRequest {
-    user: string;
-    problem: string;
-    language: keyof typeof LanguageManager;
-    code: string;
-}
-
-router.post('/', async (req, res) => {
-    const { user, problem, language, code }: DefaultPostRequest = req.body;
-    const languageManager = LanguageManager[language];
-
-    // Verify if the selected langauge is supported
-    if (languageManager === undefined) {
-        const message = `Language ${language} is not supported`;
-        res.status(StatusCodes.BAD_REQUEST).send(message);
+router.post('/', async (req: Submission.request, res) => {
+    // Note: the validation checks if the given language is supported
+    const { error } = Submission.validation.validate(req.body);
+    if (error) {
+        res.status(StatusCodes.BAD_REQUEST).json({ message: error.message });
         return;
     }
+
+    const { user, problem, language, code } = req.body;
+    const languageManager = LanguageManager[language];
 
     // File with the test cases
     const testFilePath = path.join(
@@ -59,13 +52,11 @@ router.post('/', async (req, res) => {
         await writeFile(testCodePath, testCode);
         await writeFile(unitTestCodePath, unitTestCode);
 
-        // Exec the code
+        // Execute the code
         const stdout = await exec(languageManager.getTestCommand(testCodePath));
-        res.status(StatusCodes.OK).send(stdout);
-    } catch (error) {
-        res.status(StatusCodes.BAD_REQUEST).send(
-            JSON.stringify(languageManager.filterError(error))
-        );
+        res.status(StatusCodes.OK).json(JSON.parse(stdout));
+    } catch (err) {
+        res.status(StatusCodes.INTERNAL_SERVER_ERROR).json(languageManager.filterError(err));
     }
 
     // Remove the user-problem directory

@@ -2,7 +2,7 @@ import request from 'supertest';
 import app from '@root/app';
 import { TEST_JAVASCRIPT_CODE, TEST_JAVA_CODE, TEST_PYTHON_CODE } from '@root/util/constants';
 
-const URL = '/api/test';
+const URL = '/api/submit';
 
 describe(`POST ${URL}`, () => {
     describe('python', () => {
