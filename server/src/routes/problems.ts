@@ -13,4 +13,29 @@ router.get('/', async (_, res) => {
     }
 });
 
+router.post('/', async (req: Problem.request, res) => {
+    const { error } = Problem.validation.validate(req.body);
+    if (error) {
+        res.status(StatusCodes.BAD_REQUEST).json({ message: error.message });
+        return;
+    }
+
+    const { name, directory, description, difficulty, category } = req.body;
+
+    const problem = new Problem.model({
+        name,
+        directory,
+        description,
+        difficulty,
+        category,
+    });
+
+    try {
+        const result = await problem.save();
+        res.status(StatusCodes.CREATED).json(result);
+    } catch (err) {
+        res.status(StatusCodes.INTERNAL_SERVER_ERROR).json(err);
+    }
+});
+
 export default router;
