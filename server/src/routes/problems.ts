@@ -13,6 +13,21 @@ router.get('/', async (_, res) => {
     }
 });
 
+router.get('/:directory', async (req, res) => {
+    try {
+        const { directory } = req.params;
+        const problem = await Problem.model.findOne({ directory });
+        if (!problem) {
+            const message = `Could not find problem with directory ${directory}`;
+            res.status(StatusCodes.BAD_REQUEST).json({ message });
+            return;
+        }
+        res.status(StatusCodes.OK).json(problem);
+    } catch (err) {
+        res.status(StatusCodes.INTERNAL_SERVER_ERROR).json(err);
+    }
+});
+
 router.post('/', async (req: Problem.request, res) => {
     const { error } = Problem.validation.validate(req.body);
     if (error) {

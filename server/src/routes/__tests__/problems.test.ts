@@ -57,14 +57,31 @@ describe(`GET ${URL}`, () => {
         // Act
         const response = await request(app).get(URL);
         const { body } = response;
-        const problem = body[0];
+        const problem = body.find((p) => p.directory === PROBLEMS[0].directory);
         const { name, directory, description, difficulty, category } = problem;
 
         // Assert
-        // Expect at least one problem to be received
+        // Expect all test problems to be present
         expect(body.length).toBe(2);
         // Expect each problem to have a fixed amount of properties
         expect(Object.keys(problem).length).toBe(7);
+        // Expect all properties to have a value
+        expect(name).toBe(PROBLEMS[0].name);
+        expect(directory).toBe(PROBLEMS[0].directory);
+        expect(description).toBe(PROBLEMS[0].description);
+        expect(difficulty).toBe(PROBLEMS[0].difficulty);
+        expect(category).toBe(PROBLEMS[0].category);
+    });
+
+    it('responds with a specific problem', async () => {
+        // Arrange
+
+        // Act
+        const response = await request(app).get(`${URL}/${PROBLEMS[0].directory}`);
+        const { body: problem } = response;
+        const { name, directory, description, difficulty, category } = problem;
+
+        // Assert
         // Expect all properties to have a value
         expect(name).toBe(PROBLEMS[0].name);
         expect(directory).toBe(PROBLEMS[0].directory);
