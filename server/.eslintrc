@@ -28,6 +28,7 @@
         "no-use-before-define": ["error", { "variables": false }],
         "class-methods-use-this": "off",
         "max-classes-per-file": "off",
-        "new-cap": "off"
+        "new-cap": "off",
+        "no-underscore-dangle": "off"
     }
 }

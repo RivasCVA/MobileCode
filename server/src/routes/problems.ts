@@ -13,12 +13,12 @@ router.get('/', async (_, res) => {
     }
 });
 
-router.get('/:directory', async (req, res) => {
+router.get('/:_id', async (req, res) => {
     try {
-        const { directory } = req.params;
-        const problem = await Problem.model.findOne({ directory });
+        const { _id } = req.params;
+        const problem = await Problem.model.findById(_id);
         if (!problem) {
-            const message = `Could not find problem with directory ${directory}`;
+            const message = `Could not find problem with id ${_id}`;
             res.status(StatusCodes.BAD_REQUEST).json({ message });
             return;
         }

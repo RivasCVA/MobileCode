@@ -8,6 +8,7 @@ const URL = '/api/problems';
 const DATABASE_URL = `mongodb://${env.HOST}:${env.DB_PORT}/${env.DB_NAME}-test-problems`;
 const PROBLEMS = [
     {
+        _id: 'aaaa12345678901234567890',
         name: 'Test Name 1',
         directory: 'test-directory-1',
         description: 'Test description 1.',
@@ -15,6 +16,7 @@ const PROBLEMS = [
         category: 'arrays',
     },
     {
+        _id: 'bbbb12345678901234567890',
         name: 'Test Name 2',
         directory: 'test-directory-2',
         description: 'Test description 2.',
@@ -73,11 +75,11 @@ describe(`GET ${URL}`, () => {
         expect(category).toBe(PROBLEMS[0].category);
     });
 
-    it('responds with a specific problem', async () => {
+    it('responds with problem found by id', async () => {
         // Arrange
 
         // Act
-        const response = await request(app).get(`${URL}/${PROBLEMS[0].directory}`);
+        const response = await request(app).get(`${URL}/${PROBLEMS[0]._id}`);
         const { body: problem } = response;
         const { name, directory, description, difficulty, category } = problem;
 

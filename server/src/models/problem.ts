@@ -51,6 +51,7 @@ export const schema = new mongoose.Schema({
 
 export interface request extends Request {
     body: {
+        _id?: string;
         name: string;
         directory: string;
         description: string;
