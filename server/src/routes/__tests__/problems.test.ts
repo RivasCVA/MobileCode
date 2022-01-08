@@ -2,18 +2,43 @@ import request from 'supertest';
 import mongoose from 'mongoose';
 import app from '@root/app';
 import env from '@root/util/env';
+import * as Problem from '@root/models/problem';
 
 const URL = '/api/problems';
-
-const DATABASE_URL = `mongodb://${env.HOST}:${env.DB_PORT}/${env.DB_NAME}`;
+const DATABASE_URL = `mongodb://${env.HOST}:${env.DB_PORT}/${env.DB_NAME}-test-problems`;
+const PROBLEMS = [
+    {
+        name: 'Test Name 1',
+        directory: 'test-directory-1',
+        description: 'Test description 1.',
+        difficulty: 'easy',
+        category: 'arrays',
+    },
+    {
+        name: 'Test Name 2',
+        directory: 'test-directory-2',
+        description: 'Test description 2.',
+        difficulty: 'hard',
+        category: 'strings',
+    },
+];
 
 describe(`GET ${URL}`, () => {
     beforeAll(async () => {
         await mongoose.connect(DATABASE_URL);
     });
 
+    beforeEach(async () => {
+        await Problem.model.create(PROBLEMS);
+    });
+
     afterAll(async () => {
+        await mongoose.connection.dropDatabase();
         await mongoose.connection.close();
+    });
+
+    afterEach(async () => {
+        await Problem.model.deleteMany();
     });
 
     it('OK status code on regular request', async () => {
@@ -37,15 +62,15 @@ describe(`GET ${URL}`, () => {
 
         // Assert
         // Expect at least one problem to be received
-        expect(body.length).toBeGreaterThan(0);
-        // Expect each test case to have a fixed amount of properties
+        expect(body.length).toBe(2);
+        // Expect each problem to have a fixed amount of properties
         expect(Object.keys(problem).length).toBe(7);
         // Expect all properties to have a value
-        expect(name).toBeTruthy();
-        expect(directory).toBeTruthy();
-        expect(description).toBeTruthy();
-        expect(difficulty).toBeTruthy();
-        expect(category).toBeTruthy();
+        expect(name).toBe(PROBLEMS[0].name);
+        expect(directory).toBe(PROBLEMS[0].directory);
+        expect(description).toBe(PROBLEMS[0].description);
+        expect(difficulty).toBe(PROBLEMS[0].difficulty);
+        expect(category).toBe(PROBLEMS[0].category);
     });
 });
 
@@ -54,8 +79,17 @@ describe(`POST ${URL}`, () => {
         await mongoose.connect(DATABASE_URL);
     });
 
+    beforeEach(async () => {
+        await Problem.model.create(PROBLEMS);
+    });
+
     afterAll(async () => {
+        await mongoose.connection.dropDatabase();
         await mongoose.connection.close();
+    });
+
+    afterEach(async () => {
+        await Problem.model.deleteMany();
     });
 
     it('SUCCESS status code on correct request', async () => {
@@ -63,7 +97,7 @@ describe(`POST ${URL}`, () => {
         const data = {
             name: 'Test Name',
             directory: 'test-directory',
-            description: 'Test description',
+            description: 'Test description.',
             difficulty: 'easy',
             category: 'arrays',
         };
@@ -80,7 +114,7 @@ describe(`POST ${URL}`, () => {
         const data = {
             name: 'Test Name',
             directory: 'test-directory',
-            description: 'Test description',
+            description: 'Test description.',
             difficulty: 'easy',
             category: '',
         };
@@ -94,11 +128,11 @@ describe(`POST ${URL}`, () => {
 
     it('successfully adds new problem', async () => {
         // Arrange
-        const testName = 'Test Name';
-        const testDirectory = 'test-directory';
-        const testDescription = 'Test description';
-        const testDifficulty = 'easy';
-        const testCategory = 'arrays';
+        const testName = 'New Test Name';
+        const testDirectory = 'new-test-directory';
+        const testDescription = 'New test description.';
+        const testDifficulty = 'medium';
+        const testCategory = 'sorting';
 
         const data = {
             name: testName,
