@@ -60,12 +60,12 @@ describe(`POST ${URL}`, () => {
             expect(Object.keys(testCase).length).toBe(7);
             // Expect all properties to have a value
             expect(caseNumber).toBe(1);
-            expect(input).toBeDefined();
-            expect(output).toBeDefined();
-            expect(expected).toBeDefined();
-            expect(result).toBeDefined();
-            expect(stdout).toBeDefined();
-            expect(runtime).toBeDefined();
+            expect(input).toBeTruthy();
+            expect(output).toBeTruthy();
+            expect(expected).toBeTruthy();
+            expect(result).toBeTruthy();
+            expect(stdout).toBeTruthy();
+            expect(runtime).toBeTruthy();
         });
     });
 
@@ -124,12 +124,12 @@ describe(`POST ${URL}`, () => {
             expect(Object.keys(testCase).length).toBe(7);
             // Expect all properties to have a value
             expect(caseNumber).toBe(1);
-            expect(input).toBeDefined();
-            expect(output).toBeDefined();
-            expect(expected).toBeDefined();
-            expect(result).toBeDefined();
-            expect(stdout).toBeDefined();
-            expect(runtime).toBeDefined();
+            expect(input).toBeTruthy();
+            expect(output).toBeTruthy();
+            expect(expected).toBeTruthy();
+            expect(result).toBeTruthy();
+            expect(stdout).toBeTruthy();
+            expect(runtime).toBeTruthy();
         });
     });
 
@@ -188,11 +188,12 @@ describe(`POST ${URL}`, () => {
             expect(Object.keys(testCase).length).toBe(7);
             // Expect all properties to have a value
             expect(caseNumber).toBe(1);
-            expect(input).toBeDefined();
-            expect(output).toBeDefined();
-            expect(expected).toBeDefined();
-            expect(result).toBeDefined();
-            expect(stdout).toBeDefined();
+            expect(input).toBeTruthy();
+            expect(output).toBeTruthy();
+            expect(expected).toBeTruthy();
+            expect(result).toBeTruthy();
+            expect(stdout).toBeTruthy();
+            // TODO: Fix java runtime then switch to toBeTruthy.
             expect(runtime).toBeDefined();
         });
     });

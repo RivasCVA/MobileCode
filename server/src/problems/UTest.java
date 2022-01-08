@@ -102,6 +102,7 @@ public class UTest {
      * The runtime is collected in milliseconds (ms).
      */
     public void startRuntimeCounter() throws Exception {
+        // TODO: Fix java runtime from showing 0.0 for all runs.
         if (runtime.isPresent() || runtimeStart.isPresent()) {
             throw new Exception("Cannot start runtime counter more than once.");
         }
