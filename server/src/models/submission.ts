@@ -15,7 +15,7 @@ export const validation = Joi.object({
 
 export interface request extends Request {
     body: {
-        _id?: string;
+        _id: string;
         user: string;
         problem: string;
         language: keyof typeof languages;
