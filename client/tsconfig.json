@@ -13,11 +13,11 @@
         "esModuleInterop": true,
         "skipLibCheck": false,
         "resolveJsonModule": true,
-        "baseUrl": "./src"
+        "baseUrl": "src"
     },
     "exclude": [
         "node_modules",
-        "babel.config.js",
+        "babel.config.json",
         "metro.config.js",
         "jest.config.js"
     ]
