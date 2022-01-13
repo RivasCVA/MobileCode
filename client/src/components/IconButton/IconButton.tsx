@@ -1,12 +1,25 @@
 import React from 'react';
 import { Image, StyleSheet, TouchableOpacity } from 'react-native';
 import { ButtonIcons } from 'util/icons';
+import Colors from 'util/colors';
+
+type ButtonSizes = 'small' | 'medium';
 
 interface Props {
     /**
      * Icon to display.
      */
     icon: keyof typeof ButtonIcons;
+
+    /**
+     * General button size.
+     */
+    size?: ButtonSizes;
+
+    /**
+     * Icon color.
+     */
+    color?: string;
 
     /**
      * On press handler.
@@ -33,29 +46,37 @@ interface Props {
  * Icon button for any type of touch events.
  */
 const IconButton = (props: Props): JSX.Element => {
-    const { icon, onPress, onPressIn, onPressOut, disabled = false } = props;
+    const {
+        icon,
+        size = 'medium',
+        color = Colors.Black,
+        onPress,
+        onPressIn,
+        onPressOut,
+        disabled = false,
+    } = props;
 
     return (
         <TouchableOpacity
-            style={[styles.container, disabled && styles.disabled]}
+            style={[styles.container, styles[size], disabled && styles.disabled]}
             onPress={onPress}
             onPressIn={onPressIn}
             onPressOut={onPressOut}
             activeOpacity={0.65}
             disabled={disabled}
         >
-            <Image style={styles.image} source={ButtonIcons[icon]} />
+            <Image style={[styles.image, { tintColor: color }]} source={ButtonIcons[icon]} />
         </TouchableOpacity>
     );
 };
+
+export default IconButton;
 
 const styles = StyleSheet.create({
     container: {
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-        width: 30,
-        height: 30,
     },
     image: {
         width: '100%',
@@ -64,6 +85,12 @@ const styles = StyleSheet.create({
     disabled: {
         opacity: 0.85,
     },
+    small: {
+        width: 24,
+        height: 24,
+    },
+    medium: {
+        width: 30,
+        height: 30,
+    },
 });
-
-export default IconButton;

@@ -14,6 +14,16 @@ interface Props {
     title: string;
 
     /**
+     * Button color.
+     */
+    color?: string;
+
+    /**
+     * Button text color.
+     */
+    textColor?: string;
+
+    /**
      * On press handler.
      */
     onPress?: () => void;
@@ -50,6 +60,8 @@ interface Props {
 const Button = (props: Props): JSX.Element => {
     const {
         title,
+        color = Colors.Black,
+        textColor = Colors.White,
         onPress,
         onPressIn,
         onPressOut,
@@ -84,6 +96,21 @@ const Button = (props: Props): JSX.Element => {
         }
     };
 
+    const getColorStyle = () => {
+        const style = {
+            solid: {
+                backgroundColor: color,
+                color: textColor,
+            },
+            outline: {
+                borderWidth: 2,
+                borderColor: color,
+                color: color,
+            },
+        };
+        return style[colorStyle];
+    };
+
     return (
         <TouchableOpacity
             style={styles.container}
@@ -97,12 +124,12 @@ const Button = (props: Props): JSX.Element => {
                 style={[
                     styles.button,
                     styles[borderStyle],
-                    styles[colorStyle],
+                    getColorStyle(),
                     { transform: [{ scale }] },
                     disabled && styles.disabled,
                 ]}
             >
-                <Text style={[styles.title, { color: styles[colorStyle].color }]} numberOfLines={1}>
+                <Text style={[styles.title, { color: getColorStyle().color }]} numberOfLines={1}>
                     {title}
                 </Text>
             </Animated.View>
@@ -130,15 +157,6 @@ const styles = StyleSheet.create({
     },
     rounded: {
         borderRadius: 64,
-    },
-    solid: {
-        backgroundColor: Colors.Purple,
-        color: Colors.White,
-    },
-    outline: {
-        borderWidth: 2,
-        borderColor: Colors.Purple,
-        color: Colors.Purple,
     },
     disabled: {
         opacity: 0.85,
