@@ -3,7 +3,7 @@ import { Image, StyleSheet, TouchableOpacity } from 'react-native';
 import { ButtonIcons } from 'util/icons';
 import Colors from 'util/colors';
 
-type ButtonSizes = 'small' | 'medium';
+type ButtonSizes = 'small' | 'medium' | 'large';
 
 interface Props {
     /**
@@ -92,5 +92,9 @@ const styles = StyleSheet.create({
     medium: {
         width: 30,
         height: 30,
+    },
+    large: {
+        width: 36,
+        height: 36,
     },
 });

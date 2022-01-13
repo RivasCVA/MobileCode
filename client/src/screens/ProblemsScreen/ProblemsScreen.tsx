@@ -1,8 +1,6 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
-import Button from 'components/Button';
-import IconButton from 'components/IconButton';
-import Icon from 'components/Icon';
+import Colors from 'util/colors';
 import ProblemList, { ProblemDataType } from './components/ProblemList';
 
 const data: ProblemDataType[] = [
@@ -16,25 +14,24 @@ const data: ProblemDataType[] = [
     { title: 'Title 8', difficulty: 'medium', completed: false, favorited: false },
 ];
 
-const ProblemListScreen = (): JSX.Element => {
+const ProblemsScreen = (): JSX.Element => {
     return (
         <View style={styles.container}>
-            <Button title="Title" />
-            <Button title="Title" colorStyle="outline" />
-            <IconButton icon="search" />
-            <Icon icon="check" />
             <ProblemList data={data} />
         </View>
     );
 };
 
-export default ProblemListScreen;
+export default ProblemsScreen;
 
 const styles = StyleSheet.create({
     container: {
-        height: '100%',
         display: 'flex',
         alignItems: 'center',
+        width: '100%',
+        height: '100%',
         paddingHorizontal: 32,
+        paddingVertical: 16,
+        backgroundColor: Colors.PrimaryBackground,
     },
 });

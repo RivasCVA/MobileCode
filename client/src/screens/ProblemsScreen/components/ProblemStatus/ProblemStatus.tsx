@@ -21,7 +21,7 @@ const ProblemStatus = (props: Props): JSX.Element => {
 
     return (
         <View style={[styles.container, styles[difficulty]]}>
-            {completed && <Icon icon="check" color={Colors.White} />}
+            {completed && <Icon icon="check" size="small" color={Colors.White} />}
         </View>
     );
 };
