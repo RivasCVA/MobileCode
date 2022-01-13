@@ -18,15 +18,20 @@ interface Props {
     difficulty: Difficulties;
 
     /**
-     * Mark the problem as completed.
+     * Mark the problem as complete.
      */
     completed: boolean;
+
+    /**
+     * Mark the problem as favorite initially.
+     */
+    favorited: boolean;
 }
 
 const ProblemItem = (props: Props): JSX.Element => {
-    const { title, difficulty, completed } = props;
+    const { title, difficulty, completed, favorited } = props;
 
-    const [favoriteSelected, setFavoriteSelected] = useState<boolean>(false);
+    const [favoriteSelected, setFavoriteSelected] = useState<boolean>(favorited);
 
     const handleFavoritePress = () => {
         setFavoriteSelected((curr) => !curr);
