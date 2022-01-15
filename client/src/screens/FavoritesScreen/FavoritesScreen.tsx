@@ -1,9 +1,13 @@
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import Colors from 'util/colors';
 
 const FavoritesScreen = (): JSX.Element => {
-    return <View style={styles.container} />;
+    return (
+        <View style={styles.container}>
+            <Text>Hello</Text>
+        </View>
+    );
 };
 
 export default FavoritesScreen;
