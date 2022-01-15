@@ -1,21 +1,17 @@
 import React from 'react';
-import {
-    createBottomTabNavigator,
-    BottomTabNavigationOptions,
-} from '@react-navigation/bottom-tabs';
+import { createStackNavigator, StackNavigationOptions } from '@react-navigation/stack';
 import { ParamListBase, RouteProp } from '@react-navigation/core';
 import Colors from 'util/colors';
 import Fonts from 'util/fonts';
-import Icon, { IconTypes } from 'components/Icon';
 
-const Tab = createBottomTabNavigator();
+const Stack = createStackNavigator();
 
 export type ScreenOptionsType =
-    | BottomTabNavigationOptions
+    | StackNavigationOptions
     | ((props: {
           route: RouteProp<ParamListBase, string>;
           navigation: any;
-      }) => BottomTabNavigationOptions);
+      }) => StackNavigationOptions);
 
 export type ScreensType = {
     [name: string]: {
@@ -28,17 +24,12 @@ export type ScreensType = {
          * Individual screen options to override.
          */
         options?: ScreenOptionsType;
-
-        /**
-         * Icon to render on the tab.
-         */
-        icon?: IconTypes;
     };
 };
 
 interface Props {
     /**
-     * All screens to render in each tab.
+     * All screens to render in each stack.
      *
      * Sample usage:
      * ```
@@ -61,31 +52,27 @@ interface Props {
 }
 
 /**
- * Wrapper for react native's bottom tab navigator.
+ * Wrapper for react native's stack navigator.
  */
-const BottomTabNavigator = (props: Props): JSX.Element => {
+const StackNavigator = (props: Props): JSX.Element => {
     const { screens, screenOptions } = props;
 
     return (
-        <Tab.Navigator
+        <Stack.Navigator
             screenOptions={({ route, navigation }) => ({
-                tabBarIcon: ({ focused }) => {
-                    const color = focused ? Colors.Black : Colors.LightGray;
-                    const icon = screens[route.name].icon;
-                    return <Icon icon={icon ? icon : 'close'} color={color} />;
-                },
-                headerShown: false,
-                tabBarShowLabel: false,
                 headerTintColor: Colors.PrimaryDarkText,
-                tabBarStyle: {
-                    backgroundColor: Colors.SecondaryBackground,
-                },
                 headerTitleStyle: {
                     fontFamily: Fonts.PoppinsSemiBold,
                     fontSize: 18,
                 },
                 headerStyle: {
                     backgroundColor: Colors.SecondaryBackground,
+                },
+                headerLeftContainerStyle: {
+                    paddingLeft: 16,
+                },
+                headerRightContainerStyle: {
+                    paddingRight: 16,
                 },
                 ...(screenOptions
                     ? screenOptions instanceof Function
@@ -95,10 +82,10 @@ const BottomTabNavigator = (props: Props): JSX.Element => {
             })}
         >
             {Object.entries(screens).map(([name, { component, options }], index) => (
-                <Tab.Screen key={index} name={name} component={component} options={options} />
+                <Stack.Screen key={index} name={name} component={component} options={options} />
             ))}
-        </Tab.Navigator>
+        </Stack.Navigator>
     );
 };
 
-export default BottomTabNavigator;
+export default StackNavigator;
