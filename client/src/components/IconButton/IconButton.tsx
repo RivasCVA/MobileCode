@@ -3,13 +3,15 @@ import { Image, StyleSheet, TouchableOpacity } from 'react-native';
 import { ButtonIcons } from 'util/icons';
 import Colors from 'util/colors';
 
+export type ButtonIconTypes = keyof typeof ButtonIcons;
+
 type ButtonSizes = 'small' | 'medium' | 'large';
 
 interface Props {
     /**
      * Icon to display.
      */
-    icon: keyof typeof ButtonIcons;
+    icon: ButtonIconTypes;
 
     /**
      * General button size.

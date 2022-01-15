@@ -3,13 +3,15 @@ import { Image, StyleSheet } from 'react-native';
 import Icons from 'util/icons';
 import Colors from 'util/colors';
 
+export type IconTypes = keyof typeof Icons;
+
 type IconSizes = 'small' | 'medium' | 'large';
 
 interface Props {
     /**
      * Icon to display.
      */
-    icon: keyof typeof Icons;
+    icon: IconTypes;
 
     /**
      * Icon color.

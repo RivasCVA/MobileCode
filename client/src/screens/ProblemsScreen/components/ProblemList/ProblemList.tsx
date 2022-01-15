@@ -15,17 +15,28 @@ interface Props {
      * List of data for the problems to render.
      */
     data: ProblemDataType[];
+
+    /**
+     * On problem press handler.
+     */
+    onPress?: (index: number) => void;
 }
 
 const ProblemList = (props: Props): JSX.Element => {
-    const { data } = props;
+    const { data, onPress } = props;
+
+    const handlePress = (index: number) => {
+        if (onPress) {
+            onPress(index);
+        }
+    };
 
     return (
         <View style={styles.container}>
             <FlatList
                 style={styles.list}
                 data={data}
-                renderItem={({ item }) => {
+                renderItem={({ item, index }) => {
                     return (
                         <View style={styles.separate}>
                             <ProblemItem
@@ -33,6 +44,7 @@ const ProblemList = (props: Props): JSX.Element => {
                                 difficulty={item.difficulty}
                                 completed={item.completed}
                                 favorited={item.favorited}
+                                onPress={() => handlePress(index)}
                             />
                         </View>
                     );

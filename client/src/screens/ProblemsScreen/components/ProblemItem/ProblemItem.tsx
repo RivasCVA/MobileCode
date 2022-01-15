@@ -25,11 +25,16 @@ interface Props {
     /**
      * Mark the problem as favorite initially.
      */
-    favorited: boolean;
+    favorited?: boolean;
+
+    /**
+     * On press handler.
+     */
+    onPress?: () => void;
 }
 
 const ProblemItem = (props: Props): JSX.Element => {
-    const { title, difficulty, completed, favorited } = props;
+    const { title, difficulty, completed, favorited = false, onPress } = props;
 
     const [favoriteSelected, setFavoriteSelected] = useState<boolean>(favorited);
 
@@ -38,7 +43,7 @@ const ProblemItem = (props: Props): JSX.Element => {
     };
 
     return (
-        <TouchableOpacity style={styles.container} activeOpacity={1}>
+        <TouchableOpacity style={styles.container} onPress={onPress} activeOpacity={0.75}>
             <ProblemStatus difficulty={difficulty} completed={completed} />
             <Text style={styles.text} numberOfLines={1}>
                 {title}

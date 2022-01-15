@@ -2,6 +2,7 @@ import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import Colors from 'util/colors';
 import ProblemList, { ProblemDataType } from './components/ProblemList';
+import { useNavigation } from '@react-navigation/native';
 
 const data: ProblemDataType[] = [
     { title: 'Title 1', difficulty: 'easy', completed: false, favorited: false },
@@ -15,9 +16,16 @@ const data: ProblemDataType[] = [
 ];
 
 const ProblemsScreen = (): JSX.Element => {
+    const navigator = useNavigation();
+
+    const handleProblemListPress = (index: number) => {
+        console.log(index);
+        navigator.navigate('Editor');
+    };
+
     return (
         <View style={styles.container}>
-            <ProblemList data={data} />
+            <ProblemList data={data} onPress={handleProblemListPress} />
         </View>
     );
 };

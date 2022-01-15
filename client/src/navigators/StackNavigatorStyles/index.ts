@@ -1,0 +1,1 @@
+export { DefaultScreenOptions } from './StackNavigatorStyles';
