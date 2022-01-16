@@ -1,19 +1,19 @@
 /**
- * The root stack parameter list is used to define props for Stack Navigators.
+ * The root stack parameter list is used to define props for Stack Navigator screens.
  *
- * The global modifier is for the `useNavigation` hook to type-check
- * navigation routes alongside navigation props.
+ * All screen routes should be listed in the `RootStackParamList` type.
  *
- * All screen routes should be listed in the `RootStackParamList` interface.
- * @type object | undefined
+ * Type the `useNavigation` hook as:
+ * ```
+ * const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
+ * ```
+ *
+ * Type the `useRoute` hook as:
+ * ```
+ * const route = useRoute<RouteProp<RootStackParamList, 'ScreenName'>>();
+ * ```
  */
-export interface RootStackParamList {
+export type RootStackParamList = {
     Problems: undefined;
-    Editor: undefined;
-}
-
-declare global {
-    namespace ReactNavigation {
-        interface RootParamList extends RootStackParamList {}
-    }
-}
+    Editor: { title: string };
+};

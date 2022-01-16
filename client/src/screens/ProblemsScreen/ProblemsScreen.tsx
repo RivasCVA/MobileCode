@@ -1,8 +1,11 @@
-import React from 'react';
+import React, { useLayoutEffect } from 'react';
 import { View, StyleSheet } from 'react-native';
-import Colors from 'util/colors';
-import ProblemList, { ProblemDataType } from './components/ProblemList';
 import { useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { RootStackParamList } from 'navigators';
+import ProblemList, { ProblemDataType } from './components/ProblemList';
+import Colors from 'util/colors';
+import IconButton from 'components/IconButton';
 
 const data: ProblemDataType[] = [
     { title: 'Title 1', difficulty: 'easy', completed: false, favorited: false },
@@ -16,11 +19,25 @@ const data: ProblemDataType[] = [
 ];
 
 const ProblemsScreen = (): JSX.Element => {
-    const navigator = useNavigation();
+    const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
+
+    useLayoutEffect(() => {
+        navigation.setOptions({
+            headerRight: () => <IconButton icon="filter" onPress={handleFilterPress} />,
+            headerLeft: () => <IconButton icon="search" onPress={handleSearchPress} />,
+        });
+    }, [navigation]);
+
+    const handleFilterPress = () => {
+        console.log('Filter press');
+    };
+
+    const handleSearchPress = () => {
+        console.log('Search press');
+    };
 
     const handleProblemListPress = (index: number) => {
-        console.log(index);
-        navigator.navigate('Editor');
+        navigation.navigate('Editor', { title: data[index].title });
     };
 
     return (
