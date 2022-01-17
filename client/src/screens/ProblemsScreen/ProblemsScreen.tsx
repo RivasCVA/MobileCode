@@ -7,6 +7,7 @@ import ProblemList, { ProblemDataType } from './components/ProblemList';
 import ProblemFilterPicker, { FilterValuesType } from './components/ProblemFilterPicker';
 import Colors from 'util/colors';
 import IconButton from 'components/IconButton';
+import SearchBar from 'components/SearchBar';
 
 const data: ProblemDataType[] = [
     { title: 'Title 1', difficulty: 'easy', completed: false, favorited: false },
@@ -21,6 +22,8 @@ const data: ProblemDataType[] = [
 
 const ProblemsScreen = (): JSX.Element => {
     const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
+    const [showSearch, setShowSearch] = useState<boolean>(false);
+    const [searchValue, setSearchValue] = useState<string>('');
     const [showFilter, setShowFilter] = useState<boolean>(false);
     const [filterValues, setFilterValues] = useState<FilterValuesType>({
         Easy: {
@@ -57,15 +60,42 @@ const ProblemsScreen = (): JSX.Element => {
     };
 
     const handleSearchPress = () => {
-        console.log('Search press');
+        setShowSearch(true);
+    };
+
+    const handleSearchChange = (value: string) => {
+        setSearchValue(value);
+    };
+
+    const handleSearchCancel = () => {
+        setSearchValue('');
+        setShowSearch(false);
     };
 
     const handleProblemListPress = (index: number) => {
         navigation.navigate('Editor', { title: data[index].title });
     };
 
+    const getData = () => {
+        if (searchValue) {
+            return data.filter((value) => value.title.includes(searchValue));
+        }
+        return data.filter((value) => {
+            const firstLetter = value.difficulty.substring(0, 1);
+            const key = firstLetter.toUpperCase() + value.difficulty.substring(1);
+            return filterValues[key].selected;
+        });
+    };
+
     return (
         <View style={styles.container}>
+            {showSearch && (
+                <SearchBar
+                    value={searchValue}
+                    onChange={handleSearchChange}
+                    onCancel={handleSearchCancel}
+                />
+            )}
             {showFilter && (
                 <ProblemFilterPicker
                     values={filterValues}
@@ -73,7 +103,9 @@ const ProblemsScreen = (): JSX.Element => {
                     onClose={handleFilterClose}
                 />
             )}
-            <ProblemList data={data} onPress={handleProblemListPress} />
+            <View style={styles.list}>
+                <ProblemList data={getData()} onPress={handleProblemListPress} />
+            </View>
         </View>
     );
 };
@@ -86,8 +118,12 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         width: '100%',
         height: '100%',
+        backgroundColor: Colors.PrimaryBackground,
+    },
+    list: {
+        width: '100%',
+        height: '100%',
         paddingHorizontal: 32,
         paddingVertical: 16,
-        backgroundColor: Colors.PrimaryBackground,
     },
 });
