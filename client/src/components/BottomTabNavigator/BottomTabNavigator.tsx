@@ -94,8 +94,8 @@ const BottomTabNavigator = (props: Props): JSX.Element => {
                     : {}),
             })}
         >
-            {Object.entries(screens).map(([name, { component, options }], index) => (
-                <Tab.Screen key={index} name={name} component={component} options={options} />
+            {Object.entries(screens).map(([name, { component, options }]) => (
+                <Tab.Screen key={name} name={name} component={component} options={options} />
             ))}
         </Tab.Navigator>
     );

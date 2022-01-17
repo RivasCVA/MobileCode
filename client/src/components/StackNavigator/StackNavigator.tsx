@@ -81,8 +81,8 @@ const StackNavigator = (props: Props): JSX.Element => {
                     : {}),
             })}
         >
-            {Object.entries(screens).map(([name, { component, options }], index) => (
-                <Stack.Screen key={index} name={name} component={component} options={options} />
+            {Object.entries(screens).map(([name, { component, options }]) => (
+                <Stack.Screen key={name} name={name} component={component} options={options} />
             ))}
         </Stack.Navigator>
     );

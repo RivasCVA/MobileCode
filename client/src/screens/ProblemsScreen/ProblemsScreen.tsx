@@ -1,9 +1,10 @@
-import React, { useLayoutEffect } from 'react';
+import React, { useLayoutEffect, useState } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from 'navigators';
 import ProblemList, { ProblemDataType } from './components/ProblemList';
+import ProblemFilterPicker, { FilterValuesType } from './components/ProblemFilterPicker';
 import Colors from 'util/colors';
 import IconButton from 'components/IconButton';
 
@@ -20,6 +21,21 @@ const data: ProblemDataType[] = [
 
 const ProblemsScreen = (): JSX.Element => {
     const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
+    const [showFilter, setShowFilter] = useState<boolean>(false);
+    const [filterValues, setFilterValues] = useState<FilterValuesType>({
+        Easy: {
+            selected: true,
+            color: Colors.Green,
+        },
+        Medium: {
+            selected: true,
+            color: Colors.Blue,
+        },
+        Hard: {
+            selected: true,
+            color: Colors.Red,
+        },
+    });
 
     useLayoutEffect(() => {
         navigation.setOptions({
@@ -29,7 +45,15 @@ const ProblemsScreen = (): JSX.Element => {
     }, [navigation]);
 
     const handleFilterPress = () => {
-        console.log('Filter press');
+        setShowFilter(true);
+    };
+
+    const handleFilterChange = (values: FilterValuesType) => {
+        setFilterValues(values);
+    };
+
+    const handleFilterClose = () => {
+        setShowFilter(false);
     };
 
     const handleSearchPress = () => {
@@ -42,6 +66,13 @@ const ProblemsScreen = (): JSX.Element => {
 
     return (
         <View style={styles.container}>
+            {showFilter && (
+                <ProblemFilterPicker
+                    values={filterValues}
+                    onChange={handleFilterChange}
+                    onClose={handleFilterClose}
+                />
+            )}
             <ProblemList data={data} onPress={handleProblemListPress} />
         </View>
     );

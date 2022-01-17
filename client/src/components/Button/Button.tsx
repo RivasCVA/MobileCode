@@ -1,5 +1,14 @@
 import React, { useRef } from 'react';
-import { TouchableOpacity, StyleSheet, Text, Animated } from 'react-native';
+import {
+    TouchableOpacity,
+    StyleSheet,
+    Text,
+    Animated,
+    StyleProp,
+    ViewStyle,
+    TextStyle,
+    Easing,
+} from 'react-native';
 import Fonts from 'util/fonts';
 import Colors from 'util/colors';
 
@@ -39,6 +48,16 @@ interface Props {
     onPressOut?: () => void;
 
     /**
+     * Custom button styles.
+     */
+    style?: StyleProp<ViewStyle>;
+
+    /**
+     * Custom title styles.
+     */
+    titleStyle?: StyleProp<TextStyle>;
+
+    /**
      * Border curve style.
      */
     borderStyle?: BorderStyle;
@@ -65,17 +84,21 @@ const Button = (props: Props): JSX.Element => {
         onPress,
         onPressIn,
         onPressOut,
+        style,
+        titleStyle,
         borderStyle = 'rounded',
         colorStyle = 'solid',
         disabled = false,
     } = props;
 
-    const scale = useRef(new Animated.Value(1)).current;
+    const AnimatedTouchableOpacity = Animated.createAnimatedComponent(TouchableOpacity);
+    const scaleAnimation = useRef(new Animated.Value(1)).current;
 
     const handlePressIn = () => {
-        Animated.timing(scale, {
-            duration: 150,
-            toValue: 0.95,
+        Animated.timing(scaleAnimation, {
+            duration: 125,
+            toValue: 0.975,
+            easing: Easing.ease,
             useNativeDriver: true,
         }).start();
 
@@ -85,9 +108,10 @@ const Button = (props: Props): JSX.Element => {
     };
 
     const handlePressOut = () => {
-        Animated.timing(scale, {
+        Animated.timing(scaleAnimation, {
             duration: 50,
             toValue: 1,
+            easing: Easing.ease,
             useNativeDriver: true,
         }).start();
 
@@ -97,7 +121,7 @@ const Button = (props: Props): JSX.Element => {
     };
 
     const getColorStyle = () => {
-        const style = {
+        const colorsStyles = {
             solid: {
                 backgroundColor: color,
                 color: textColor,
@@ -108,32 +132,32 @@ const Button = (props: Props): JSX.Element => {
                 color: color,
             },
         };
-        return style[colorStyle];
+        return colorsStyles[colorStyle];
     };
 
     return (
-        <TouchableOpacity
-            style={styles.container}
+        <AnimatedTouchableOpacity
+            style={[
+                styles.container,
+                styles[borderStyle],
+                getColorStyle(),
+                { transform: [{ scale: scaleAnimation }] },
+                disabled && styles.disabled,
+                style,
+            ]}
             onPress={onPress}
             onPressIn={handlePressIn}
             onPressOut={handlePressOut}
             disabled={disabled}
             activeOpacity={0.95}
         >
-            <Animated.View
-                style={[
-                    styles.button,
-                    styles[borderStyle],
-                    getColorStyle(),
-                    { transform: [{ scale }] },
-                    disabled && styles.disabled,
-                ]}
+            <Text
+                style={[styles.title, { color: getColorStyle().color }, titleStyle]}
+                numberOfLines={1}
             >
-                <Text style={[styles.title, { color: getColorStyle().color }]} numberOfLines={1}>
-                    {title}
-                </Text>
-            </Animated.View>
-        </TouchableOpacity>
+                {title}
+            </Text>
+        </AnimatedTouchableOpacity>
     );
 };
 
@@ -143,9 +167,6 @@ const styles = StyleSheet.create({
     container: {
         width: 144,
         height: 56,
-    },
-    button: {
-        flex: 1,
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
@@ -154,6 +175,7 @@ const styles = StyleSheet.create({
     title: {
         fontSize: 18,
         fontFamily: Fonts.PoppinsMedium,
+        color: Colors.PrimaryLightText,
     },
     rounded: {
         borderRadius: 64,
