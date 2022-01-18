@@ -1,5 +1,5 @@
 import Button from 'components/Button';
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { StyleSheet, TextInput, Animated, Easing } from 'react-native';
 import Colors from 'util/colors';
 import Fonts from 'util/fonts';
@@ -13,7 +13,7 @@ interface Props {
     /**
      * On value change.
      */
-    onChange: (value: string) => void;
+    onChange: (newValue: string) => void;
 
     /**
      * Use this method to hide the search bar.
@@ -24,17 +24,26 @@ interface Props {
      * Whether to play a closing animation on cancel.
      */
     animateOnCancel?: boolean;
+
+    /**
+     * Whether to show the cancel button next to the text input.
+     */
+    showCancel?: boolean;
 }
 
+/**
+ * Search bar containing a text input.
+ */
 const SearchBar = (props: Props): JSX.Element => {
-    const { value, onChange, onCancel, animateOnCancel = true } = props;
+    const { value, onChange, onCancel, animateOnCancel = false, showCancel = false } = props;
 
     const heightAnimation = useRef(new Animated.Value(64)).current;
+    const [buttonDisabled, setButtonDisabled] = useState<boolean>(false);
 
     useEffect(() => {
         heightAnimation.setValue(0);
         Animated.timing(heightAnimation, {
-            duration: 500,
+            duration: 400,
             toValue: 64,
             easing: Easing.in(Easing.elastic(1)),
             useNativeDriver: false,
@@ -43,15 +52,20 @@ const SearchBar = (props: Props): JSX.Element => {
 
     const handleCancelPress = () => {
         if (animateOnCancel) {
+            // Prevent double clicking cancel
+            setButtonDisabled(true);
+
             heightAnimation.setValue(64);
             Animated.timing(heightAnimation, {
-                duration: 200,
+                duration: 150,
                 toValue: 0,
                 easing: Easing.in(Easing.ease),
                 useNativeDriver: false,
             }).start(() => {
                 if (onCancel) {
-                    onCancel();
+                    setTimeout(() => {
+                        onCancel();
+                    }, 10);
                 }
             });
         } else if (onCancel) {
@@ -61,13 +75,23 @@ const SearchBar = (props: Props): JSX.Element => {
 
     return (
         <Animated.View style={[styles.container, { height: heightAnimation }]}>
-            <TextInput value={value} onChangeText={onChange} style={styles.input} />
-            <Button
-                style={styles.button}
-                titleStyle={styles.buttonTitle}
-                title="Cancel"
-                onPress={handleCancelPress}
+            <TextInput
+                style={styles.input}
+                value={value}
+                onChangeText={onChange}
+                autoCorrect={false}
+                autoFocus={true}
+                returnKeyType="done"
             />
+            {showCancel && (
+                <Button
+                    style={styles.button}
+                    titleStyle={styles.buttonTitle}
+                    title="Cancel"
+                    onPress={handleCancelPress}
+                    disabled={buttonDisabled}
+                />
+            )}
         </Animated.View>
     );
 };
@@ -80,12 +104,13 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'space-between',
         flexDirection: 'row',
+        overflow: 'hidden',
         paddingHorizontal: 16,
         width: '100%',
         backgroundColor: Colors.SecondaryBackground,
     },
     input: {
-        width: 247,
+        flex: 1,
         height: 40,
         borderWidth: 2,
         borderColor: Colors.DarkGray,
@@ -98,6 +123,7 @@ const styles = StyleSheet.create({
     button: {
         width: 82,
         height: 32,
+        marginLeft: 32,
         backgroundColor: Colors.DarkGray,
     },
     buttonTitle: {

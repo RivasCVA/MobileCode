@@ -1,13 +1,15 @@
-import React, { useLayoutEffect, useState } from 'react';
-import { View, StyleSheet } from 'react-native';
+import React, { useLayoutEffect, useMemo, useState } from 'react';
+import { View, StyleSheet, Text } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from 'navigators';
 import ProblemList, { ProblemDataType } from './components/ProblemList';
-import ProblemFilterPicker, { FilterValuesType } from './components/ProblemFilterPicker';
+import MultiValuePicker, { PickerValuesType } from 'components/MultiValuePicker';
+import SearchBar from 'components/SearchBar';
 import Colors from 'util/colors';
 import IconButton from 'components/IconButton';
-import SearchBar from 'components/SearchBar';
+import { titleCase } from 'util/strings';
+import Fonts from 'util/fonts';
 
 const data: ProblemDataType[] = [
     { title: 'Title 1', difficulty: 'easy', completed: false, favorited: false },
@@ -25,7 +27,7 @@ const ProblemsScreen = (): JSX.Element => {
     const [showSearch, setShowSearch] = useState<boolean>(false);
     const [searchValue, setSearchValue] = useState<string>('');
     const [showFilter, setShowFilter] = useState<boolean>(false);
-    const [filterValues, setFilterValues] = useState<FilterValuesType>({
+    const [filterValues, setFilterValues] = useState<PickerValuesType>({
         Easy: {
             selected: true,
             color: Colors.Green,
@@ -51,8 +53,8 @@ const ProblemsScreen = (): JSX.Element => {
         setShowFilter(true);
     };
 
-    const handleFilterChange = (values: FilterValuesType) => {
-        setFilterValues(values);
+    const handleFilterChange = (newValues: PickerValuesType) => {
+        setFilterValues(newValues);
     };
 
     const handleFilterClose = () => {
@@ -63,8 +65,8 @@ const ProblemsScreen = (): JSX.Element => {
         setShowSearch(true);
     };
 
-    const handleSearchChange = (value: string) => {
-        setSearchValue(value);
+    const handleSearchChange = (newValue: string) => {
+        setSearchValue(newValue);
     };
 
     const handleSearchCancel = () => {
@@ -76,16 +78,12 @@ const ProblemsScreen = (): JSX.Element => {
         navigation.navigate('Editor', { title: data[index].title });
     };
 
-    const getData = () => {
+    const filteredData = useMemo(() => {
         if (searchValue) {
             return data.filter((value) => value.title.includes(searchValue));
         }
-        return data.filter((value) => {
-            const firstLetter = value.difficulty.substring(0, 1);
-            const key = firstLetter.toUpperCase() + value.difficulty.substring(1);
-            return filterValues[key].selected;
-        });
-    };
+        return data.filter((value) => filterValues[titleCase(value.difficulty)].selected);
+    }, [filterValues, searchValue]);
 
     return (
         <View style={styles.container}>
@@ -94,17 +92,22 @@ const ProblemsScreen = (): JSX.Element => {
                     value={searchValue}
                     onChange={handleSearchChange}
                     onCancel={handleSearchCancel}
+                    animateOnCancel
+                    showCancel
                 />
             )}
             {showFilter && (
-                <ProblemFilterPicker
+                <MultiValuePicker
                     values={filterValues}
                     onChange={handleFilterChange}
                     onClose={handleFilterClose}
                 />
             )}
             <View style={styles.list}>
-                <ProblemList data={getData()} onPress={handleProblemListPress} />
+                {filteredData.length === 0 && (
+                    <Text style={styles.noMatch}>Oops! No problems match.</Text>
+                )}
+                <ProblemList data={filteredData} onPress={handleProblemListPress} />
             </View>
         </View>
     );
@@ -125,5 +128,11 @@ const styles = StyleSheet.create({
         height: '100%',
         paddingHorizontal: 32,
         paddingVertical: 16,
+    },
+    noMatch: {
+        textAlign: 'center',
+        fontFamily: Fonts.PoppinsMedium,
+        fontSize: 16,
+        color: Colors.SecondaryDarkText,
     },
 });

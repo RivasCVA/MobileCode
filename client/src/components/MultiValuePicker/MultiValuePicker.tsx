@@ -1,5 +1,5 @@
 import Button from 'components/Button';
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {
     GestureResponderEvent,
     Modal,
@@ -14,10 +14,10 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import Colors, { HexToRGB } from 'util/colors';
 import Fonts from 'util/fonts';
 
-export type FilterValuesType = {
+export type PickerValuesType = {
     [title: string]: {
         /**
-         * Whether the filter value is selected.
+         * Whether the picker value is selected.
          */
         selected: boolean;
 
@@ -30,30 +30,31 @@ export type FilterValuesType = {
 
 interface Props {
     /**
-     * Filter values.
+     * All picker values.
      */
-    values: FilterValuesType;
+    values: PickerValuesType;
 
     /**
-     * On filter values change.
+     * On picker values change.
      */
-    onChange: (selectedValues: FilterValuesType) => void;
+    onChange: (newValues: PickerValuesType) => void;
 
     /**
-     * Use this method to remove the filter picker.
+     * Use this method to remove the picker.
      */
     onClose: () => void;
 }
 
 /**
- * Filter picker used to selected values for which to filter all problems.
+ * Multi-value picker used to select multiple option values.
  */
-const ProblemFilterPicker = (props: Props): JSX.Element => {
+const MultiValuePicker = (props: Props): JSX.Element => {
     const { values, onChange, onClose } = props;
 
     const AnimatedTouchableOpacity = Animated.createAnimatedComponent(TouchableOpacity);
     const opacityAnimation = useRef(new Animated.Value(1)).current;
     const translateYAnimation = useRef(new Animated.Value(0)).current;
+    const [doneButtonDisabled, setDoneButtonDisabled] = useState<boolean>(false);
 
     useEffect(() => {
         opacityAnimation.setValue(0);
@@ -80,6 +81,9 @@ const ProblemFilterPicker = (props: Props): JSX.Element => {
 
     // Calls the close method after animation
     const close = (delay: number = 100) => {
+        // Prevent double clicking done
+        setDoneButtonDisabled(true);
+
         opacityAnimation.setValue(1);
         Animated.timing(opacityAnimation, {
             duration: 100,
@@ -111,7 +115,7 @@ const ProblemFilterPicker = (props: Props): JSX.Element => {
         onChange(newValues);
     };
 
-    const handleActionPress = () => {
+    const handleDonePress = () => {
         close();
     };
 
@@ -139,12 +143,13 @@ const ProblemFilterPicker = (props: Props): JSX.Element => {
                                 ))}
                             </View>
                             <Button
-                                style={styles.actionButton}
+                                style={styles.doneButton}
                                 titleStyle={styles.buttonTitle}
                                 title="Done"
                                 color={Colors.PrimaryBackground}
                                 textColor={Colors.PrimaryDarkText}
-                                onPress={handleActionPress}
+                                onPress={handleDonePress}
+                                disabled={doneButtonDisabled}
                             />
                         </AnimatedTouchableOpacity>
                     </SafeAreaView>
@@ -154,7 +159,7 @@ const ProblemFilterPicker = (props: Props): JSX.Element => {
     );
 };
 
-export default ProblemFilterPicker;
+export default MultiValuePicker;
 
 const styles = StyleSheet.create({
     container: {
@@ -190,7 +195,7 @@ const styles = StyleSheet.create({
             height: 4,
         },
     },
-    actionButton: {
+    doneButton: {
         width: 330,
         height: 48,
         borderRadius: 16,
