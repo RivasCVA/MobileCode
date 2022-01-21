@@ -16,9 +16,14 @@ interface Props {
     onChange: (newValue: string) => void;
 
     /**
-     * Use this method to hide the search bar.
+     * Use this method to hide the search bar (if necessary).
      */
     onCancel?: () => void;
+
+    /**
+     * Whether to show the cancel button next to the text input.
+     */
+    showCancel?: boolean;
 
     /**
      * Whether to play a closing animation on cancel.
@@ -26,29 +31,40 @@ interface Props {
     animateOnCancel?: boolean;
 
     /**
-     * Whether to show the cancel button next to the text input.
+     * Whether to play a mounting animation.
      */
-    showCancel?: boolean;
+    animateOnMount?: boolean;
 }
 
 /**
  * Search bar containing a text input.
  */
 const SearchBar = (props: Props): JSX.Element => {
-    const { value, onChange, onCancel, animateOnCancel = false, showCancel = false } = props;
+    const {
+        value,
+        onChange,
+        onCancel,
+        showCancel = false,
+        animateOnCancel = false,
+        animateOnMount = false,
+    } = props;
 
     const heightAnimation = useRef(new Animated.Value(64)).current;
     const [buttonDisabled, setButtonDisabled] = useState<boolean>(false);
 
     useEffect(() => {
-        heightAnimation.setValue(0);
-        Animated.timing(heightAnimation, {
-            duration: 400,
-            toValue: 64,
-            easing: Easing.in(Easing.elastic(1)),
-            useNativeDriver: false,
-        }).start();
-    }, [heightAnimation]);
+        if (animateOnMount) {
+            heightAnimation.setValue(0);
+            Animated.timing(heightAnimation, {
+                duration: 400,
+                toValue: 64,
+                easing: Easing.in(Easing.elastic(1)),
+                useNativeDriver: false,
+            }).start();
+        } else {
+            heightAnimation.setValue(64);
+        }
+    }, [animateOnMount, heightAnimation]);
 
     const handleCancelPress = () => {
         if (animateOnCancel) {
@@ -81,6 +97,7 @@ const SearchBar = (props: Props): JSX.Element => {
                 onChangeText={onChange}
                 autoCorrect={false}
                 autoFocus={true}
+                autoCapitalize="none"
                 returnKeyType="done"
             />
             {showCancel && (

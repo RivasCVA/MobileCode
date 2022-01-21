@@ -5,7 +5,7 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from 'navigators';
 import ProblemList, { ProblemDataType } from './components/ProblemList';
 import MultiValuePicker, { PickerValuesType } from 'components/MultiValuePicker';
-import SearchBar from 'components/SearchBar';
+import HeaderSearchBar from 'components/HeaderSearchBar';
 import Colors from 'util/colors';
 import IconButton from 'components/IconButton';
 import { titleCase } from 'util/strings';
@@ -80,7 +80,9 @@ const ProblemsScreen = (): JSX.Element => {
 
     const filteredData = useMemo(() => {
         if (searchValue) {
-            return data.filter((value) => value.title.includes(searchValue));
+            return data.filter((value) =>
+                value.title.toLocaleLowerCase().includes(searchValue.toLowerCase())
+            );
         }
         return data.filter((value) => filterValues[titleCase(value.difficulty)].selected);
     }, [filterValues, searchValue]);
@@ -88,12 +90,13 @@ const ProblemsScreen = (): JSX.Element => {
     return (
         <View style={styles.container}>
             {showSearch && (
-                <SearchBar
+                <HeaderSearchBar
                     value={searchValue}
                     onChange={handleSearchChange}
                     onCancel={handleSearchCancel}
-                    animateOnCancel
                     showCancel
+                    animateOnCancel
+                    animateOnMount
                 />
             )}
             {showFilter && (
@@ -104,10 +107,11 @@ const ProblemsScreen = (): JSX.Element => {
                 />
             )}
             <View style={styles.list}>
-                {filteredData.length === 0 && (
-                    <Text style={styles.noMatch}>Oops! No problems match.</Text>
+                {filteredData.length === 0 ? (
+                    <Text style={styles.noMatch}>Oops! No problems match criteria.</Text>
+                ) : (
+                    <ProblemList data={filteredData} onPress={handleProblemListPress} />
                 )}
-                <ProblemList data={filteredData} onPress={handleProblemListPress} />
             </View>
         </View>
     );
@@ -133,6 +137,6 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         fontFamily: Fonts.PoppinsMedium,
         fontSize: 16,
-        color: Colors.SecondaryDarkText,
+        color: Colors.PrimaryDarkText,
     },
 });
