@@ -1,4 +1,7 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { fetchProblems } from 'util/requests';
+import { setProblems } from 'store/problems/actions';
 import BottomTabNavigator from 'components/BottomTabNavigator';
 import ProblemsStackNavigator from 'navigators/ProblemsStackNavigator';
 import FavoritesScreen from 'screens/FavoritesScreen';
@@ -8,6 +11,20 @@ import FavoritesScreen from 'screens/FavoritesScreen';
  * All screens and navigators must go through here.
  */
 const RootScreen = (): JSX.Element => {
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        const fetch = async () => {
+            try {
+                const problems = await fetchProblems();
+                dispatch(setProblems(problems));
+            } catch (err) {
+                console.log(err);
+            }
+        };
+        fetch();
+    }, [dispatch]);
+
     return (
         <BottomTabNavigator
             screens={{
