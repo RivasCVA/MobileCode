@@ -1,7 +1,8 @@
 import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { fetchProblems } from 'util/requests';
+import { fetchProblems, fetchUser } from 'util/requests';
 import { setProblems } from 'store/problems/actions';
+import { setUser } from 'store/user/actions';
 import BottomTabNavigator from 'components/BottomTabNavigator';
 import ProblemsStackNavigator from 'navigators/ProblemsStackNavigator';
 import FavoritesScreen from 'screens/FavoritesScreen';
@@ -18,6 +19,8 @@ const RootScreen = (): JSX.Element => {
             try {
                 const problems = await fetchProblems();
                 dispatch(setProblems(problems));
+                const user = await fetchUser('61da63c10af1a7b02c97ddce');
+                dispatch(setUser(user));
             } catch (err) {
                 console.log(err);
             }

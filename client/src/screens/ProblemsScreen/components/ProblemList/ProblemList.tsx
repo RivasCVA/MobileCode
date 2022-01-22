@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { View, FlatList, StyleSheet } from 'react-native';
 import ProblemItem from '../ProblemItem';
 import { Problem } from 'store/problems/types';
@@ -10,17 +10,41 @@ interface Props {
     data: Problem[];
 
     /**
+     * List of all completed problem ids.
+     */
+    completed?: string[];
+
+    /**
+     * List of all favorite problem ids.
+     */
+    favorites?: string[];
+
+    /**
      * On problem press handler.
      */
     onPress?: (index: number) => void;
+
+    /**
+     * On problem favorite button press.
+     */
+    onFavoritePress?: (index: number, currentValue: boolean) => void;
 }
 
 const ProblemList = (props: Props): JSX.Element => {
-    const { data, onPress } = props;
+    const { data, completed = [], favorites = [], onPress, onFavoritePress } = props;
+
+    const completedSet = useMemo(() => new Set<string>(completed), [completed]);
+    const favoritesSet = useMemo(() => new Set<string>(favorites), [favorites]);
 
     const handlePress = (index: number) => {
         if (onPress) {
             onPress(index);
+        }
+    };
+
+    const handleFavoritePress = (index: number, currentValue: boolean) => {
+        if (onFavoritePress) {
+            onFavoritePress(index, currentValue);
         }
     };
 
@@ -35,9 +59,12 @@ const ProblemList = (props: Props): JSX.Element => {
                             <ProblemItem
                                 title={item.name}
                                 difficulty={item.difficulty}
-                                completed={true}
-                                favorited={false}
+                                completed={completedSet.has(item._id)}
+                                favorited={favoritesSet.has(item._id)}
                                 onPress={() => handlePress(index)}
+                                onFavoritePress={() =>
+                                    handleFavoritePress(index, favoritesSet.has(item._id))
+                                }
                             />
                         </View>
                     );

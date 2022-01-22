@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { StyleSheet, Text, TouchableOpacity } from 'react-native';
 import Colors from 'util/colors';
 import ProblemStatus from '../ProblemStatus';
@@ -23,24 +23,23 @@ interface Props {
     completed: boolean;
 
     /**
-     * Mark the problem as favorite initially.
+     * Mark the problem as favorite.
      */
-    favorited?: boolean;
+    favorited: boolean;
 
     /**
      * On press handler.
      */
     onPress?: () => void;
+
+    /**
+     * On favorite button press.
+     */
+    onFavoritePress?: () => void;
 }
 
 const ProblemItem = (props: Props): JSX.Element => {
-    const { title, difficulty, completed, favorited = false, onPress } = props;
-
-    const [favoriteSelected, setFavoriteSelected] = useState<boolean>(favorited);
-
-    const handleFavoritePress = () => {
-        setFavoriteSelected((curr) => !curr);
-    };
+    const { title, difficulty, completed, favorited, onPress, onFavoritePress } = props;
 
     return (
         <TouchableOpacity style={styles.container} onPress={onPress} activeOpacity={0.75}>
@@ -49,10 +48,10 @@ const ProblemItem = (props: Props): JSX.Element => {
                 {title}
             </Text>
             <IconButton
-                icon={favoriteSelected ? 'favorite' : 'favoriteOutline'}
+                icon={favorited ? 'favorite' : 'favoriteOutline'}
                 size="small"
                 color={Colors.DarkGray}
-                onPress={handleFavoritePress}
+                onPress={onFavoritePress}
             />
         </TouchableOpacity>
     );
