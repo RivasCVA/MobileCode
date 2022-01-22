@@ -1,1 +1,1 @@
-export { default, type ProblemDataType } from './ProblemList';
+export { default } from './ProblemList';

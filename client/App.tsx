@@ -2,14 +2,20 @@ import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { StatusBar } from 'react-native';
+import { Provider } from 'react-redux';
+import { configureStore } from 'store';
 import RootScreen from 'screens/RootScreen';
+
+const store = configureStore();
 
 const App = (): JSX.Element => {
     return (
         <SafeAreaProvider>
             <StatusBar barStyle="dark-content" />
             <NavigationContainer>
-                <RootScreen />
+                <Provider store={store}>
+                    <RootScreen />
+                </Provider>
             </NavigationContainer>
         </SafeAreaProvider>
     );

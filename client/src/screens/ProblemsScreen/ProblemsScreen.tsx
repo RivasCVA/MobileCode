@@ -2,25 +2,16 @@ import React, { useLayoutEffect, useMemo, useState } from 'react';
 import { View, StyleSheet, Text } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
+import { useSelector } from 'react-redux';
 import { RootStackParamList } from 'navigators';
-import ProblemList, { ProblemDataType } from './components/ProblemList';
+import { selectProblems } from 'store/problems/selectors';
+import ProblemList from './components/ProblemList';
 import MultiValuePicker, { PickerValuesType } from 'components/MultiValuePicker';
 import HeaderSearchBar from 'components/HeaderSearchBar';
 import Colors from 'util/colors';
 import IconButton from 'components/IconButton';
 import { titleCase } from 'util/strings';
 import Fonts from 'util/fonts';
-
-const data: ProblemDataType[] = [
-    { title: 'Title 1', difficulty: 'easy', completed: false, favorited: false },
-    { title: 'Title 2', difficulty: 'medium', completed: true, favorited: true },
-    { title: 'Title 3', difficulty: 'hard', completed: true, favorited: false },
-    { title: 'Title 4', difficulty: 'hard', completed: true, favorited: true },
-    { title: 'Title 5', difficulty: 'medium', completed: false, favorited: true },
-    { title: 'Title 6', difficulty: 'easy', completed: false, favorited: false },
-    { title: 'Title 7', difficulty: 'medium', completed: true, favorited: true },
-    { title: 'Title 8', difficulty: 'medium', completed: false, favorited: false },
-];
 
 const ProblemsScreen = (): JSX.Element => {
     const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
@@ -41,6 +32,7 @@ const ProblemsScreen = (): JSX.Element => {
             color: Colors.Red,
         },
     });
+    const problems = useSelector(selectProblems);
 
     useLayoutEffect(() => {
         navigation.setOptions({
@@ -75,17 +67,17 @@ const ProblemsScreen = (): JSX.Element => {
     };
 
     const handleProblemListPress = (index: number) => {
-        navigation.navigate('Editor', { title: data[index].title });
+        navigation.navigate('Editor', { title: problems[index].name });
     };
 
-    const filteredData = useMemo(() => {
+    const filteredProblems = useMemo(() => {
         if (searchValue) {
-            return data.filter((value) =>
-                value.title.toLocaleLowerCase().includes(searchValue.toLowerCase())
+            return problems.filter((problem) =>
+                problem.name.toLocaleLowerCase().includes(searchValue.toLowerCase())
             );
         }
-        return data.filter((value) => filterValues[titleCase(value.difficulty)].selected);
-    }, [filterValues, searchValue]);
+        return problems.filter((problem) => filterValues[titleCase(problem.difficulty)].selected);
+    }, [filterValues, problems, searchValue]);
 
     return (
         <View style={styles.container}>
@@ -107,10 +99,10 @@ const ProblemsScreen = (): JSX.Element => {
                 />
             )}
             <View style={styles.list}>
-                {filteredData.length === 0 ? (
+                {filteredProblems.length === 0 ? (
                     <Text style={styles.noMatch}>Oops! No problems match criteria.</Text>
                 ) : (
-                    <ProblemList data={filteredData} onPress={handleProblemListPress} />
+                    <ProblemList data={filteredProblems} onPress={handleProblemListPress} />
                 )}
             </View>
         </View>

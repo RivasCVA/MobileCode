@@ -1,20 +1,13 @@
 import React from 'react';
 import { View, FlatList, StyleSheet } from 'react-native';
-import Difficulties from 'util/difficulties';
 import ProblemItem from '../ProblemItem';
-
-export interface ProblemDataType {
-    title: string;
-    difficulty: Difficulties;
-    completed: boolean;
-    favorited: boolean;
-}
+import { Problem } from 'store/problems/types';
 
 interface Props {
     /**
      * List of data for the problems to render.
      */
-    data: ProblemDataType[];
+    data: Problem[];
 
     /**
      * On problem press handler.
@@ -40,10 +33,10 @@ const ProblemList = (props: Props): JSX.Element => {
                     return (
                         <View style={styles.separate}>
                             <ProblemItem
-                                title={item.title}
+                                title={item.name}
                                 difficulty={item.difficulty}
-                                completed={item.completed}
-                                favorited={item.favorited}
+                                completed={true}
+                                favorited={false}
                                 onPress={() => handlePress(index)}
                             />
                         </View>
