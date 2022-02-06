@@ -6,6 +6,7 @@
     "rules": {
         "no-shadow": "off",
         "no-undef": "off",
-        "@typescript-eslint/no-shadow": ["error"]
+        "@typescript-eslint/no-shadow": ["error"],
+        "react-native/no-inline-styles": "off"
     }
 }
