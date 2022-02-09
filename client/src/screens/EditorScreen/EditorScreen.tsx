@@ -3,10 +3,13 @@ import { StyleSheet, View } from 'react-native';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { type RootStackParamList } from 'navigators';
-import CodeEditor, { CodeEditorStyleType, CodeEditorSyntaxStyles } from 'components/CodeEditor';
 import Colors from 'util/colors';
 import { useKeyboard } from '@react-native-community/hooks';
 import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
+import CodeEditor, {
+    CodeEditorStyleType,
+    CodeEditorSyntaxStyles,
+} from '@rivascva/react-native-code-editor';
 
 const EditorScreen = (): JSX.Element => {
     const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
