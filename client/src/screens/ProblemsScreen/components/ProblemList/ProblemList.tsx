@@ -2,6 +2,7 @@ import React, { useMemo } from 'react';
 import { View, FlatList, StyleSheet } from 'react-native';
 import ProblemItem from '../ProblemItem';
 import { Problem } from 'store/problems/types';
+import { Strut } from 'components/Layout';
 
 interface Props {
     /**
@@ -55,20 +56,19 @@ const ProblemList = (props: Props): JSX.Element => {
                 data={data}
                 renderItem={({ item, index }) => {
                     return (
-                        <View style={styles.separate}>
-                            <ProblemItem
-                                title={item.name}
-                                difficulty={item.difficulty}
-                                completed={completedSet.has(item._id)}
-                                favorited={favoritesSet.has(item._id)}
-                                onPress={() => handlePress(index)}
-                                onFavoritePress={() =>
-                                    handleFavoritePress(index, favoritesSet.has(item._id))
-                                }
-                            />
-                        </View>
+                        <ProblemItem
+                            title={item.name}
+                            difficulty={item.difficulty}
+                            completed={completedSet.has(item._id)}
+                            favorited={favoritesSet.has(item._id)}
+                            onPress={() => handlePress(index)}
+                            onFavoritePress={() =>
+                                handleFavoritePress(index, favoritesSet.has(item._id))
+                            }
+                        />
                     );
                 }}
+                ItemSeparatorComponent={() => <Strut size={16} />}
             />
         </View>
     );
@@ -83,8 +83,5 @@ const styles = StyleSheet.create({
     },
     list: {
         overflow: 'visible',
-    },
-    separate: {
-        marginVertical: 8,
     },
 });
