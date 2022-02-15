@@ -27,7 +27,7 @@ export const HexToRGB = (hex: string, alpha?: number): string => {
     const r = h.indexOf(hex[1]) * 16 + h.indexOf(hex[2]);
     const g = h.indexOf(hex[3]) * 16 + h.indexOf(hex[4]);
     const b = h.indexOf(hex[5]) * 16 + h.indexOf(hex[6]);
-    if (alpha) {
+    if (alpha !== undefined) {
         return `rgba(${r}, ${g}, ${b}, ${alpha})`;
     }
     return `rgb(${r}, ${g}, ${b})`;
