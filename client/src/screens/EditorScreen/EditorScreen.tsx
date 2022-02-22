@@ -1,5 +1,5 @@
-import React, { useLayoutEffect, useState } from 'react';
-import { StyleSheet, View } from 'react-native';
+import React, { useLayoutEffect, useRef, useState } from 'react';
+import { StyleSheet, TextInput, View } from 'react-native';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { type RootStackParamList } from 'navigators';
@@ -19,6 +19,7 @@ const EditorScreen = (): JSX.Element => {
     const route = useRoute<RouteProp<RootStackParamList, 'Editor'>>();
     const keyboard = useKeyboard();
     const tabBarHeight = useBottomTabBarHeight();
+    const codeEditorRef = useRef<TextInput>(null);
     const [code, setCode] = useState<string>('');
     const [showDescriptionModal, setShowDescriptionModal] = useState<boolean>(false);
 
@@ -49,11 +50,17 @@ const EditorScreen = (): JSX.Element => {
     }, [navigation, title]);
 
     const handleDescriptionPress = () => {
+        codeEditorRef.current?.blur();
         setShowDescriptionModal(true);
     };
 
     const handleCompilerPress = () => {
         //
+    };
+
+    const handleDescriptionModalClose = () => {
+        setShowDescriptionModal(false);
+        codeEditorRef.current?.focus();
     };
 
     return (
@@ -62,7 +69,7 @@ const EditorScreen = (): JSX.Element => {
                 <DescriptionModal
                     title={title}
                     difficulty={'medium'}
-                    onClose={() => setShowDescriptionModal(false)}
+                    onClose={handleDescriptionModalClose}
                 >
                     This is a description.
                 </DescriptionModal>
@@ -73,6 +80,7 @@ const EditorScreen = (): JSX.Element => {
                 syntaxStyle={CodeEditorSyntaxStyles.atomOneDark}
                 initialValue={code}
                 onChange={(newCode) => setCode(newCode)}
+                ref={codeEditorRef}
                 showLineNumbers
             />
         </View>
