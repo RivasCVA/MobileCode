@@ -71,7 +71,7 @@ const EditorScreen = (): JSX.Element => {
                     difficulty={'medium'}
                     onClose={handleDescriptionModalClose}
                 >
-                    This is a description.
+                    {'**This** <u>is</u> *a* ***description***.'}
                 </DescriptionModal>
             )}
             <CodeEditor

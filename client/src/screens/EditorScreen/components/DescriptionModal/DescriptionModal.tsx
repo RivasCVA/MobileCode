@@ -6,6 +6,7 @@ import Fonts from 'util/fonts';
 import { Strut } from 'components/Layout';
 import BottomSheet, { BottomSheetScrollView } from '@gorhom/bottom-sheet';
 import Difficulties from 'util/difficulties';
+import MarkdownView from 'components/MarkdownView';
 
 interface Props {
     /**
@@ -110,9 +111,7 @@ const DescriptionModal = (props: Props): JSX.Element => {
                         <Strut size={16} />
                         <View style={styles.separator} />
                         <Strut size={24} />
-                        <Text style={styles.description} numberOfLines={0}>
-                            {children}
-                        </Text>
+                        <MarkdownView>{children}</MarkdownView>
                     </BottomSheetScrollView>
                 </BottomSheet>
             </Animated.View>
