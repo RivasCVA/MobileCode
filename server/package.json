@@ -4,6 +4,7 @@
   "description": "A mobile platform to prepare for technical coding interviews.",
   "main": "index.js",
   "scripts": {
+    "prepare": "cd .. && husky install server/.husky",
     "start": "echo \"starting in development...\" && npm run dev:cache && npm run dev:nodemon",
     "start:prod": "echo \"starting in production\" && npm run prod:build && npm run prod:node",
     "dev:cache": "rm -rf src/cache && mkdir src/cache",
@@ -25,6 +26,7 @@
   "jest": {
     "preset": "ts-jest",
     "testEnvironment": "node",
+    "testTimeout": 2000,
     "testPathIgnorePatterns": [
       "node_modules"
     ],
@@ -68,6 +70,7 @@
     "prettier": "^2.4.1",
     "supertest": "^6.1.6",
     "ts-jest": "^27.1.2",
-    "typescript": "^4.4.4"
+    "typescript": "^4.4.4",
+    "husky": "^7.0.0"
   }
 }

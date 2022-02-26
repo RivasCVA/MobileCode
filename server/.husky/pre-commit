@@ -1,0 +1,7 @@
+#!/bin/sh
+. "$(dirname "$0")/_/husky.sh"
+
+cd server
+npm run lint
+npm run prettier
+npm test || (echo "Hint: Make sure to have MongoDB running." && exit 1)
