@@ -1,7 +1,7 @@
 import app from '@root/app';
 import env from '@root/util/env';
-import Debug from '@root/util/debug';
 import mongoose from 'mongoose';
+import Debug from '@root/util/debug';
 
 const DB_URL = `mongodb://${env.HOST}:${env.DB_PORT}/${env.DB_NAME}`;
 const SERVER_URL = `http://${env.HOST}:${env.SERVER_PORT}`;
