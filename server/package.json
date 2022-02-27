@@ -17,11 +17,19 @@
     "prettier": "prettier --check \"src/**/*.{ts,js}\"",
     "test": "jest src",
     "test:prod": "jest dist",
+    "test:commit": "bash -c 'npm test || (echo \"Hint: Make sure to have MongoDB running\" && exit 1)'",
     "start-mongo-mac": "brew services start mongodb-community",
     "stop-mongo-mac": "brew services stop mongodb-community"
   },
   "_moduleAliases": {
     "@root": "dist"
+  },
+  "lint-staged": {
+    "**/*.{js,jsx,ts,tsx}": [
+      "npm run lint",
+      "npm run prettier",
+      "npm run test:commit"
+    ]
   },
   "jest": {
     "preset": "ts-jest",
@@ -65,12 +73,13 @@
     "eslint-plugin-import": "^2.25.2",
     "eslint-plugin-jest": "^25.3.0",
     "eslint-plugin-prettier": "^4.0.0",
+    "husky": "^7.0.0",
     "jest": "^27.4.5",
+    "lint-staged": "^12.3.4",
     "nodemon": "^2.0.14",
     "prettier": "^2.4.1",
     "supertest": "^6.1.6",
     "ts-jest": "^27.1.2",
-    "typescript": "^4.4.4",
-    "husky": "^7.0.0"
+    "typescript": "^4.4.4"
   }
 }

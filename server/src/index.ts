@@ -1,6 +1,6 @@
 import app from '@root/app';
-import Debug from '@root/util/debug';
 import env from '@root/util/env';
+import Debug from '@root/util/debug';
 import mongoose from 'mongoose';
 
 const DB_URL = `mongodb://${env.HOST}:${env.DB_PORT}/${env.DB_NAME}`;
