@@ -18,6 +18,16 @@ const USERS = [
 
 describe(`GET ${URL}`, () => {
     beforeAll(async () => {
+        await Promise.all(
+            USERS.map(async (user) => {
+                const { error } = User.validation.validate(user, {
+                    allowUnknown: true,
+                });
+                if (error) {
+                    throw Error(error.message);
+                }
+            })
+        );
         await mongoose.connect(DATABASE_URL);
     });
 

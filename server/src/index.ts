@@ -1,10 +1,8 @@
 import app from '@root/app';
-import env from '@root/util/env';
 import mongoose from 'mongoose';
 import Debug from '@root/util/debug';
-
-const DB_URL = `mongodb://${env.HOST}:${env.DB_PORT}/${env.DB_NAME}`;
-const SERVER_URL = `http://${env.HOST}:${env.SERVER_PORT}`;
+import env from '@root/util/env';
+import { DB_URL, SERVER_URL } from '@root/util/constants';
 
 mongoose.connect(DB_URL);
 

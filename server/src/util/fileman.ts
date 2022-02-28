@@ -51,7 +51,7 @@ export const readFile = (filePath: string): Promise<string> =>
  * Creates a new directory.
  * If the directory already exists then nothing will happen.
  * @param dirPath Path of the directory
- * @returns A promise object resolving with the create completes.
+ * @returns A promise object resolving with the create completed.
  */
 export const createDirectory = (dirPath: string): Promise<void> =>
     new Promise<void>((resolve, reject) => {
@@ -62,3 +62,51 @@ export const createDirectory = (dirPath: string): Promise<void> =>
             resolve();
         });
     });
+
+/**
+ * Reads all files and directories inside the given directory.
+ * @param dirPath Path of the directory.
+ * @returns A promise object resolving with all content inside.
+ */
+export const readDirectory = (dirPath: string): Promise<string[]> =>
+    new Promise<string[]>((resolve, reject) => {
+        fs.readdir(dirPath, (err, data) => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(data);
+            }
+        });
+    });
+
+/**
+ * Check if the given path points to a directory.
+ * @param dirPath Path of the directory.
+ * @returns A promise object resolving if the path is a directory.
+ */
+export const isDirectory = (dirPath: string): Promise<boolean> =>
+    new Promise<boolean>((resolve, reject) => {
+        fs.stat(dirPath, (err, stats) => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(stats.isDirectory());
+            }
+        });
+    });
+
+/**
+ * Gets all subdirectories of the given parent directory.
+ * All files in the parent directory are ignored.
+ * @param dirPath Path of the parent directory.
+ * @returns A promise object resolving with all subdirectories.
+ */
+export const getSubdirectories = async (dirPath: string): Promise<string[]> => {
+    const contents = await readDirectory(dirPath);
+    const results = await Promise.all(
+        contents.map((dirName) => isDirectory(`${dirPath}/${dirName}`))
+    );
+    return contents
+        .map((dirName, i) => (results[i] ? `${dirPath}/${dirName}` : null))
+        .filter((item) => item !== null);
+};

@@ -14,6 +14,12 @@ const PROBLEMS = [
         description: 'Test description 1.',
         difficulty: 'easy',
         category: 'arrays',
+        cases: [
+            {
+                input: [1, 2, 3],
+                result: 1,
+            },
+        ],
     },
     {
         _id: 'bbbb12345678901234567890',
@@ -22,11 +28,27 @@ const PROBLEMS = [
         description: 'Test description 2.',
         difficulty: 'hard',
         category: 'strings',
+        cases: [
+            {
+                input: [1, 2, 3],
+                result: 1,
+            },
+        ],
     },
 ];
 
 describe(`GET ${URL}`, () => {
     beforeAll(async () => {
+        await Promise.all(
+            PROBLEMS.map(async (problem) => {
+                const { error } = Problem.validation.validate(problem, {
+                    allowUnknown: true,
+                });
+                if (error) {
+                    throw Error(error.message);
+                }
+            })
+        );
         await mongoose.connect(DATABASE_URL);
     });
 
@@ -60,19 +82,20 @@ describe(`GET ${URL}`, () => {
         const response = await request(app).get(URL);
         const { body } = response;
         const problem = body.find((p) => p.directory === PROBLEMS[0].directory);
-        const { name, directory, description, difficulty, category } = problem;
+        const { name, directory, description, difficulty, category, cases } = problem;
 
         // Assert
         // Expect all test problems to be present
         expect(body.length).toBe(2);
         // Expect each problem to have a fixed amount of properties
-        expect(Object.keys(problem).length).toBe(7);
+        expect(Object.keys(problem).length).toBe(8);
         // Expect all properties to have a value
         expect(name).toBe(PROBLEMS[0].name);
         expect(directory).toBe(PROBLEMS[0].directory);
         expect(description).toBe(PROBLEMS[0].description);
         expect(difficulty).toBe(PROBLEMS[0].difficulty);
         expect(category).toBe(PROBLEMS[0].category);
+        expect(cases).toMatchObject(PROBLEMS[0].cases);
     });
 
     it('responds with problem found by id', async () => {
@@ -81,15 +104,18 @@ describe(`GET ${URL}`, () => {
         // Act
         const response = await request(app).get(`${URL}/${PROBLEMS[0]._id}`);
         const { body: problem } = response;
-        const { name, directory, description, difficulty, category } = problem;
+        const { name, directory, description, difficulty, category, cases } = problem;
 
         // Assert
+        // Expect the problem to have a fixed amount of properties
+        expect(Object.keys(PROBLEMS[0]).length).toBe(7);
         // Expect all properties to have a value
         expect(name).toBe(PROBLEMS[0].name);
         expect(directory).toBe(PROBLEMS[0].directory);
         expect(description).toBe(PROBLEMS[0].description);
         expect(difficulty).toBe(PROBLEMS[0].difficulty);
         expect(category).toBe(PROBLEMS[0].category);
+        expect(cases).toMatchObject(PROBLEMS[0].cases);
     });
 });
 
@@ -119,6 +145,12 @@ describe(`POST ${URL}`, () => {
             description: 'Test description.',
             difficulty: 'easy',
             category: 'arrays',
+            cases: [
+                {
+                    input: [1, 2, 3],
+                    result: 1,
+                },
+            ],
         };
 
         // Act
@@ -136,6 +168,12 @@ describe(`POST ${URL}`, () => {
             description: 'Test description.',
             difficulty: 'easy',
             category: '',
+            cases: [
+                {
+                    input: [1, 2, 3],
+                    result: 1,
+                },
+            ],
         };
 
         // Act
@@ -152,6 +190,12 @@ describe(`POST ${URL}`, () => {
         const testDescription = 'New test description.';
         const testDifficulty = 'medium';
         const testCategory = 'sorting';
+        const testCases = [
+            {
+                input: [1, 2, 3],
+                result: 1,
+            },
+        ];
 
         const data = {
             name: testName,
@@ -159,18 +203,23 @@ describe(`POST ${URL}`, () => {
             description: testDescription,
             difficulty: testDifficulty,
             category: testCategory,
+            cases: testCases,
         };
 
         // Act
         const response = await request(app).post(URL).send(data);
         const { body } = response;
-        const { name, directory, description, difficulty, category } = body;
+        const { name, directory, description, difficulty, category, cases } = body;
 
         // Assert
+        // Expect the problem to have a fixed amount of properties
+        expect(Object.keys(body).length).toBe(8);
+        // Expect each property to be present
         expect(name).toBe(testName);
         expect(directory).toBe(testDirectory);
         expect(description).toBe(testDescription);
         expect(difficulty).toBe(testDifficulty);
         expect(category).toBe(testCategory);
+        expect(cases).toMatchObject(testCases);
     });
 });
