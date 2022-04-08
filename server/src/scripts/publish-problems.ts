@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 import Debug from '@root/util/debug';
 import { getSubdirectories, readFile } from '@root/util/fileman';
-import { codeToString } from '@root/util/cparse';
+import { codeToString } from '@root/util/strings';
 import { request } from '@root/models/problem';
 import { DB_URL } from '@root/util/constants';
 import * as Problem from '@root/models/problem';

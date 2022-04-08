@@ -3,7 +3,7 @@ import path from 'path';
 import { StatusCodes } from 'http-status-codes';
 import exec from '@root/util/exec';
 import { writeFile, deleteFile, readFile, createDirectory } from '@root/util/fileman';
-import { stringToCode } from '@root/util/cparse';
+import { stringToCode } from '@root/util/strings';
 import { LanguageManager } from '@root/util/language';
 import * as Submission from '@root/models/submission';
 
