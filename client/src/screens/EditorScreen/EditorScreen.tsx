@@ -1,4 +1,4 @@
-import React, { useLayoutEffect, useRef, useState } from 'react';
+import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { StyleSheet, TextInput, View } from 'react-native';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
@@ -13,6 +13,9 @@ import Colors from 'util/colors';
 import { Strut } from 'components/Layout';
 import IconButton from 'components/IconButton';
 import DescriptionModal from './components/DescriptionModal';
+import { fetchProblem } from 'util/requests';
+import { Problem } from 'store/problems/types';
+import { stringToCode } from 'util/strings';
 
 const EditorScreen = (): JSX.Element => {
     const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
@@ -22,8 +25,9 @@ const EditorScreen = (): JSX.Element => {
     const codeEditorRef = useRef<TextInput>(null);
     const [code, setCode] = useState<string>('');
     const [showDescriptionModal, setShowDescriptionModal] = useState<boolean>(false);
+    const [problem, setProblem] = useState<Problem>();
 
-    const { title } = route.params;
+    const { _id, title } = route.params;
 
     const editorKeyboardOffset = keyboard.keyboardShown
         ? { marginBottom: keyboard.keyboardHeight - tabBarHeight }
@@ -49,6 +53,24 @@ const EditorScreen = (): JSX.Element => {
         });
     }, [navigation, title]);
 
+    // Fetch problem data from API
+    useEffect(() => {
+        const fetch = async () => {
+            try {
+                setProblem(await fetchProblem(_id));
+            } catch (err) {
+                console.log(err);
+            }
+        };
+        fetch();
+    }, [_id]);
+
+    useEffect(() => {
+        if (problem) {
+            // TODO: Set initial code.
+        }
+    }, [problem]);
+
     const handleDescriptionPress = () => {
         codeEditorRef.current?.blur();
         setShowDescriptionModal(true);
@@ -65,13 +87,13 @@ const EditorScreen = (): JSX.Element => {
 
     return (
         <View style={styles.container}>
-            {showDescriptionModal && (
+            {showDescriptionModal && problem && (
                 <DescriptionModal
                     title={title}
-                    difficulty={'medium'}
+                    difficulty={problem.difficulty}
                     onClose={handleDescriptionModalClose}
                 >
-                    {'**This** <u>is</u> *a* ***description***.'}
+                    {stringToCode(problem.description)}
                 </DescriptionModal>
             )}
             <CodeEditor

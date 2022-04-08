@@ -81,21 +81,18 @@ describe(`GET ${URL}`, () => {
         // Act
         const response = await request(app).get(URL);
         const { body } = response;
-        const problem = body.find((p) => p.directory === PROBLEMS[0].directory);
-        const { name, directory, description, difficulty, category, cases } = problem;
+        const problem = body.find((p) => p._id === PROBLEMS[0]._id);
+        const { name, difficulty, category } = problem;
 
         // Assert
         // Expect all test problems to be present
         expect(body.length).toBe(2);
         // Expect each problem to have a fixed amount of properties
-        expect(Object.keys(problem).length).toBe(8);
+        expect(Object.keys(problem).length).toBe(4);
         // Expect all properties to have a value
         expect(name).toBe(PROBLEMS[0].name);
-        expect(directory).toBe(PROBLEMS[0].directory);
-        expect(description).toBe(PROBLEMS[0].description);
         expect(difficulty).toBe(PROBLEMS[0].difficulty);
         expect(category).toBe(PROBLEMS[0].category);
-        expect(cases).toMatchObject(PROBLEMS[0].cases);
     });
 
     it('responds with problem found by id', async () => {

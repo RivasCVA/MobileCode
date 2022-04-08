@@ -15,5 +15,8 @@
  */
 export type RootStackParamList = {
     Problems: undefined;
-    Editor: { title: string };
+    Editor: {
+        _id: string;
+        title: string;
+    };
 };

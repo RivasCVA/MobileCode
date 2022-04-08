@@ -3,12 +3,13 @@ import { Problem } from 'store/problems/types';
 import { User } from 'store/user/types';
 
 const BASE_URL = 'http://localhost:3000/api';
+const DEFAULT_TIMEOUT = 5000;
 
 export const fetchProblems = async () => {
     return new Promise<Problem[]>(async (resolve, reject) => {
         try {
             const response = await axios.get(`${BASE_URL}/problems`, {
-                timeout: 5000,
+                timeout: DEFAULT_TIMEOUT,
             });
             const problems = response.data as Problem[];
             if (problems) {
@@ -22,11 +23,29 @@ export const fetchProblems = async () => {
     });
 };
 
+export const fetchProblem = async (_id: string) => {
+    return new Promise<Problem>(async (resolve, reject) => {
+        try {
+            const response = await axios.get(`${BASE_URL}/problems/${_id}`, {
+                timeout: DEFAULT_TIMEOUT,
+            });
+            const problem = response.data as Problem;
+            if (problem) {
+                resolve(problem);
+            } else {
+                reject('Error fetching problem: cast error');
+            }
+        } catch (err) {
+            reject('Error fetching problems');
+        }
+    });
+};
+
 export const fetchUser = async (_id: string) => {
     return new Promise<User>(async (resolve, reject) => {
         try {
             const response = await axios.get(`${BASE_URL}/users/${_id}`, {
-                timeout: 5000,
+                timeout: DEFAULT_TIMEOUT,
             });
             const user = response.data as User;
             if (user) {

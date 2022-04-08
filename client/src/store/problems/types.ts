@@ -10,6 +10,7 @@ export interface Problem {
     description: string;
     difficulty: Difficulties;
     category: Categories;
+    cases: Object[];
 }
 
 interface SetProblemsAction {

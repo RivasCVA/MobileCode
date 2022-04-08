@@ -58,7 +58,11 @@ const ProblemsScreen = (): JSX.Element => {
     };
 
     const handleProblemListPress = (index: number) => {
-        navigation.navigate('Editor', { title: problems[index].name });
+        const problem = problems[index];
+        navigation.navigate('Editor', {
+            _id: problem._id,
+            title: problem.name,
+        });
     };
 
     const handleProblemListFavoritePress = (index: number, currentValue: boolean) => {

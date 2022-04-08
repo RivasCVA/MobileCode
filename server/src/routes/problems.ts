@@ -6,7 +6,8 @@ const router = express.Router();
 
 router.get('/', async (_, res) => {
     try {
-        const problems = await Problem.model.find();
+        const attributes = ['name', 'difficulty', 'category'];
+        const problems = await Problem.model.find().select(attributes.join(' '));
         res.status(StatusCodes.OK).json(problems);
     } catch (err) {
         res.status(StatusCodes.INTERNAL_SERVER_ERROR).json(err);
