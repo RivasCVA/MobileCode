@@ -10,6 +10,7 @@ export interface Problem {
     description: string;
     difficulty: Difficulties;
     category: Categories;
+    template: string;
     cases: Object[];
 }
 
