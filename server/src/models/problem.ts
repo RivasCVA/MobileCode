@@ -24,40 +24,44 @@ export const validation = Joi.object({
     category: Joi.string()
         .valid(...Object.keys(categories))
         .required(),
-    template: Joi.string().required(),
+    template: Joi.string().allow(null),
     cases: Joi.array().min(1).items(Joi.object()).required(),
 });
 
-export const schema = new mongoose.Schema({
-    name: {
-        type: String,
-        required: true,
+export const schema = new mongoose.Schema(
+    {
+        name: {
+            type: String,
+            required: true,
+        },
+        directory: {
+            type: String,
+            required: true,
+        },
+        description: {
+            type: String,
+            required: true,
+        },
+        difficulty: {
+            type: String,
+            required: true,
+        },
+        category: {
+            type: String,
+            required: true,
+        },
+        template: {
+            type: String,
+            required: false,
+            default: null,
+        },
+        cases: {
+            type: [{ type: Object }],
+            required: true,
+        },
     },
-    directory: {
-        type: String,
-        required: true,
-    },
-    description: {
-        type: String,
-        required: true,
-    },
-    difficulty: {
-        type: String,
-        required: true,
-    },
-    category: {
-        type: String,
-        required: true,
-    },
-    template: {
-        type: String,
-        required: true,
-    },
-    cases: {
-        type: [{ type: Object }],
-        required: true,
-    },
-});
+    { versionKey: false }
+);
 
 export interface request extends Request {
     body: {

@@ -101,7 +101,7 @@ describe(`GET ${URL}`, () => {
         // Arrange
 
         // Act
-        const response = await request(app).get(`${URL}/${PROBLEMS[0]._id}`);
+        const response = await request(app).get(`${URL}/${PROBLEMS[0]._id}?language=python`);
         const { body: problem } = response;
         const { name, directory, description, difficulty, category, template, cases } = problem;
 
@@ -116,115 +116,5 @@ describe(`GET ${URL}`, () => {
         expect(category).toBe(PROBLEMS[0].category);
         expect(template).toBe(PROBLEMS[0].template);
         expect(cases).toMatchObject(PROBLEMS[0].cases);
-    });
-});
-
-describe(`POST ${URL}`, () => {
-    beforeAll(async () => {
-        await mongoose.connect(DATABASE_URL);
-    });
-
-    beforeEach(async () => {
-        await Problem.model.create(PROBLEMS);
-    });
-
-    afterAll(async () => {
-        await mongoose.connection.dropDatabase();
-        await mongoose.connection.close();
-    });
-
-    afterEach(async () => {
-        await Problem.model.deleteMany();
-    });
-
-    it('SUCCESS status code on correct request', async () => {
-        // Arrange
-        const data = {
-            name: 'Test Name',
-            directory: 'test-directory',
-            description: 'Test description.',
-            difficulty: 'easy',
-            category: 'arrays',
-            template: 'Test template',
-            cases: [
-                {
-                    input: [1, 2, 3],
-                    result: 1,
-                },
-            ],
-        };
-
-        // Act
-        const response = await request(app).post(URL).send(data);
-
-        // Assert
-        expect(response.statusCode).toBe(201);
-    });
-
-    it('BAD_REQUEST status code on incorrect request', async () => {
-        // Arrange
-        const data = {
-            name: 'Test Name',
-            directory: 'test-directory',
-            description: 'Test description.',
-            difficulty: 'easy',
-            category: '',
-            template: 'Test template',
-            cases: [
-                {
-                    input: [1, 2, 3],
-                    result: 1,
-                },
-            ],
-        };
-
-        // Act
-        const response = await request(app).post(URL).send(data);
-
-        // Assert
-        expect(response.statusCode).toBe(400);
-    });
-
-    it('successfully adds new problem', async () => {
-        // Arrange
-        const testName = 'New Test Name';
-        const testDirectory = 'new-test-directory';
-        const testDescription = 'New test description.';
-        const testDifficulty = 'medium';
-        const testCategory = 'sorting';
-        const testTemplate = 'New test template';
-        const testCases = [
-            {
-                input: [1, 2, 3],
-                result: 1,
-            },
-        ];
-
-        const data = {
-            name: testName,
-            directory: testDirectory,
-            description: testDescription,
-            difficulty: testDifficulty,
-            category: testCategory,
-            template: testTemplate,
-            cases: testCases,
-        };
-
-        // Act
-        const response = await request(app).post(URL).send(data);
-        const { body } = response;
-        const { name, directory, description, difficulty, category, template, cases } = body;
-
-        // Assert
-        // Expect the problem to have a fixed amount of properties
-        expect(Object.keys(body).length).toBe(9);
-        // Expect each property to be present
-        expect(name).toBe(testName);
-        expect(directory).toBe(testDirectory);
-        expect(description).toBe(testDescription);
-        expect(difficulty).toBe(testDifficulty);
-        expect(category).toBe(testCategory);
-        expect(template).toBe(testTemplate);
-        expect(cases).toMatchObject(testCases);
     });
 });

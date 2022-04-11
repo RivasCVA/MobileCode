@@ -37,6 +37,8 @@ const publish = async () => {
             // Insert the dynamic data
             problem.description = parsedReadme;
             problem.directory = dirName;
+            // Template is dependent on the language requested
+            problem.template = null;
 
             const { error } = Problem.validation.validate(problem);
             if (error) {
