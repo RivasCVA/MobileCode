@@ -13,8 +13,8 @@ class Test {
     case1() {
         // Arrange
         const input = {
-            nums: [1, 4, 5, 8, 10, 14],
-            target: 8,
+            nums: [-3, -2, -1, 0, 1, 2, 3],
+            target: 0,
         };
         const expected = 3;
 
@@ -37,10 +37,10 @@ class Test {
     case2() {
         // Arrange
         const input = {
-            nums: [-8, -4, -1, 0, 4, 9, 8],
-            target: 0,
+            nums: [2, 4, 6, 8, 10],
+            target: 10,
         };
-        const expected = 3;
+        const expected = 4;
 
         // Act
         const uTest = new UTest(2);
@@ -61,8 +61,8 @@ class Test {
     case3() {
         // Arrange
         const input = {
-            nums: [-90, -45, -10, 1, 21, 36, 80],
-            target: 27,
+            nums: [-100, -50, 0, 50, 100],
+            target: 25,
         };
         const expected = -1;
 

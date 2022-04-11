@@ -13,10 +13,10 @@ class Test {
     case1() {
         // Arrange
         const input = {
-            array: [3, 5, -4, 8, 11, 1, -1, 6],
-            target: 10,
+            array: [2, 7, 11, 15],
+            target: 9,
         };
-        const expected = [11, -1];
+        const expected = [2, 7];
 
         // Act
         const uTest = new UTest(1);
@@ -40,13 +40,40 @@ class Test {
     case2() {
         // Arrange
         const input = {
-            array: [4, 6],
-            target: 10,
+            array: [3, 2, 4],
+            target: 6,
         };
-        const expected = [4, 6];
+        const expected = [2, 4];
 
         // Act
         const uTest = new UTest(2);
+        uTest.startReadingSTDOUT();
+        uTest.startRuntimeCounter();
+        const output = this.solution.twoSum(input.array, input.target);
+        uTest.stopRuntimeCounter();
+        uTest.stopReadingSTDOUT();
+        uTest.addIO(input, output, expected);
+
+        // Assert
+        uTest.assert(output.length === 2);
+        for (const num of expected) {
+            uTest.assert(output.includes(num));
+        }
+
+        // Return
+        return uTest.getObject();
+    }
+
+    case3() {
+        // Arrange
+        const input = {
+            array: [2, 8, 6, 4],
+            target: 16,
+        };
+        const expected = [];
+
+        // Act
+        const uTest = new UTest(3);
         uTest.startReadingSTDOUT();
         uTest.startRuntimeCounter();
         const output = this.solution.twoSum(input.array, input.target);
@@ -68,6 +95,7 @@ class Test {
         return JSON.stringify([
             this.case1(),
             this.case2(),
+            this.case3(),
         ]);
     }
 }

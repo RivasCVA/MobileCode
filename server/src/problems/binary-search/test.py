@@ -1,7 +1,7 @@
-from utest import UTest
-from solution import Solution
 import json
 import sys
+from utest import UTest
+from solution import Solution
 
 class Test:
     """
@@ -15,8 +15,8 @@ class Test:
     def case_1(self):
         # Arrange
         input = {
-            "nums": [1, 4, 5, 8, 10, 14],
-            "target": 8
+            "nums": [-3, -2, -1, 0, 1, 2, 3],
+            "target": 0
         }
         expected = 3
 
@@ -38,10 +38,10 @@ class Test:
     def case_2(self):
         # Arrange
         input = {
-            "nums": [-8, -4, -1, 0, 4, 9, 8],
-            "target": 0
+            "nums": [2, 4, 6, 8, 10],
+            "target": 10
         }
-        expected = 3
+        expected = 4
 
         # Act
         u_test = UTest(2)
@@ -61,8 +61,8 @@ class Test:
     def case_3(self):
         # Arrange
         input = {
-            "nums": [-90, -45, -10, 1, 21, 36, 80],
-            "target": 27
+            "nums": [-100, -50, 0, 50, 100],
+            "target": 25
         }
         expected = -1
 

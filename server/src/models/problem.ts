@@ -24,6 +24,7 @@ export const validation = Joi.object({
     category: Joi.string()
         .valid(...Object.keys(categories))
         .required(),
+    template: Joi.string().required(),
     cases: Joi.array().min(1).items(Joi.object()).required(),
 });
 
@@ -48,6 +49,10 @@ export const schema = new mongoose.Schema({
         type: String,
         required: true,
     },
+    template: {
+        type: String,
+        required: true,
+    },
     cases: {
         type: [{ type: Object }],
         required: true,
@@ -62,6 +67,7 @@ export interface request extends Request {
         description: string;
         difficulty: keyof typeof difficulties;
         category: keyof typeof categories;
+        template: string;
         cases: Object[];
     };
 }

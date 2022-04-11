@@ -36,7 +36,7 @@ router.post('/', async (req: Problem.request, res) => {
         return;
     }
 
-    const { name, directory, description, difficulty, category, cases } = req.body;
+    const { name, directory, description, difficulty, category, template, cases } = req.body;
 
     const problem = new Problem.model({
         name,
@@ -44,6 +44,7 @@ router.post('/', async (req: Problem.request, res) => {
         description,
         difficulty,
         category,
+        template,
         cases,
     });
 

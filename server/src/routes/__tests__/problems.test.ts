@@ -14,6 +14,7 @@ const PROBLEMS = [
         description: 'Test description 1.',
         difficulty: 'easy',
         category: 'arrays',
+        template: 'Test template 1',
         cases: [
             {
                 input: [1, 2, 3],
@@ -28,6 +29,7 @@ const PROBLEMS = [
         description: 'Test description 2.',
         difficulty: 'hard',
         category: 'strings',
+        template: 'Test template 2',
         cases: [
             {
                 input: [1, 2, 3],
@@ -101,17 +103,18 @@ describe(`GET ${URL}`, () => {
         // Act
         const response = await request(app).get(`${URL}/${PROBLEMS[0]._id}`);
         const { body: problem } = response;
-        const { name, directory, description, difficulty, category, cases } = problem;
+        const { name, directory, description, difficulty, category, template, cases } = problem;
 
         // Assert
         // Expect the problem to have a fixed amount of properties
-        expect(Object.keys(PROBLEMS[0]).length).toBe(7);
+        expect(Object.keys(PROBLEMS[0]).length).toBe(8);
         // Expect all properties to have a value
         expect(name).toBe(PROBLEMS[0].name);
         expect(directory).toBe(PROBLEMS[0].directory);
         expect(description).toBe(PROBLEMS[0].description);
         expect(difficulty).toBe(PROBLEMS[0].difficulty);
         expect(category).toBe(PROBLEMS[0].category);
+        expect(template).toBe(PROBLEMS[0].template);
         expect(cases).toMatchObject(PROBLEMS[0].cases);
     });
 });
@@ -142,6 +145,7 @@ describe(`POST ${URL}`, () => {
             description: 'Test description.',
             difficulty: 'easy',
             category: 'arrays',
+            template: 'Test template',
             cases: [
                 {
                     input: [1, 2, 3],
@@ -165,6 +169,7 @@ describe(`POST ${URL}`, () => {
             description: 'Test description.',
             difficulty: 'easy',
             category: '',
+            template: 'Test template',
             cases: [
                 {
                     input: [1, 2, 3],
@@ -187,6 +192,7 @@ describe(`POST ${URL}`, () => {
         const testDescription = 'New test description.';
         const testDifficulty = 'medium';
         const testCategory = 'sorting';
+        const testTemplate = 'New test template';
         const testCases = [
             {
                 input: [1, 2, 3],
@@ -200,23 +206,25 @@ describe(`POST ${URL}`, () => {
             description: testDescription,
             difficulty: testDifficulty,
             category: testCategory,
+            template: testTemplate,
             cases: testCases,
         };
 
         // Act
         const response = await request(app).post(URL).send(data);
         const { body } = response;
-        const { name, directory, description, difficulty, category, cases } = body;
+        const { name, directory, description, difficulty, category, template, cases } = body;
 
         // Assert
         // Expect the problem to have a fixed amount of properties
-        expect(Object.keys(body).length).toBe(8);
+        expect(Object.keys(body).length).toBe(9);
         // Expect each property to be present
         expect(name).toBe(testName);
         expect(directory).toBe(testDirectory);
         expect(description).toBe(testDescription);
         expect(difficulty).toBe(testDifficulty);
         expect(category).toBe(testCategory);
+        expect(template).toBe(testTemplate);
         expect(cases).toMatchObject(testCases);
     });
 });

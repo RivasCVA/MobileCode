@@ -1,3 +1,9 @@
-This is the **Two Sum** *problem*.
-<br />
-Try your best at this.
+Given an ***array*** of integers and a integer ***target***, return the two numbers in the ***array*** that add up to ***target***. Otherwise, return an empty array.
+
+Example 1:
+
+```
+array: [2, 7, 11, 15]
+target: 6
+result: [2, 7]
+```

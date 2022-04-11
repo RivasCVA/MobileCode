@@ -18,7 +18,7 @@ public class Test {
 
     private JSONObject case1() throws Exception {
         // Arrange
-        InputObject input = new InputObject(new int[] {1, 4, 5, 8, 10, 14}, 8);
+        InputObject input = new InputObject(new int[] {-3, -2, -1, 0, 1, 2, 3}, 0);
         int expected = 3;
 
         // Act
@@ -39,8 +39,8 @@ public class Test {
 
     private JSONObject case2() throws Exception {
         // Arrange
-        InputObject input = new InputObject(new int[] {-8, -4, -1, 0, 4, 9, 8}, 0);
-        int expected = 3;
+        InputObject input = new InputObject(new int[] {2, 4, 6, 8, 10}, 10);
+        int expected = 4;
 
         // Act
         UTest uTest = new UTest(2);
@@ -60,7 +60,7 @@ public class Test {
 
     private JSONObject case3() throws Exception {
         // Arrange
-        InputObject input = new InputObject(new int[] {-90, -45, -10, 1, 21, 36, 80}, 27);
+        InputObject input = new InputObject(new int[] {-100, -50, 0, 50, 100}, 25);
         int expected = -1;
 
         // Act
