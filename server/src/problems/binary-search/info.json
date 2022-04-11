@@ -4,7 +4,19 @@
     "category": "dp",
     "cases": [
         {
-            "error": "add cases"
+            "nums": [1, 4, 5, 8, 10, 14],
+            "target": 8,
+            "result": 3
+        },
+        {
+            "nums": [-8, -4, -1, 0, 4, 9, 8],
+            "target": 0,
+            "result": 3
+        },
+        {
+            "nums": [-90, -45, -10, 1, 21, 36, 80],
+            "target": 27,
+            "result": -1
         }
     ]
 }
