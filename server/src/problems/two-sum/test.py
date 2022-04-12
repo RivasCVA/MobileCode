@@ -68,7 +68,7 @@ class Test:
             "array": [2, 8, 6, 4],
             "target": 16
         }
-        expected = []
+        expected = [-1, -1]
 
         # Act
         u_test = UTest(3)

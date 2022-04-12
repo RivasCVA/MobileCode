@@ -1,4 +1,4 @@
-Given an ***array*** of integers and a integer ***target***, return the two numbers in the ***array*** that add up to ***target***. Otherwise, return an empty array.
+Given an ***array*** of integers and a integer ***target***, return the two numbers in the ***array*** that add up to ***target***. Otherwise, return **[-1, -1]**.
 
 Example 1:
 

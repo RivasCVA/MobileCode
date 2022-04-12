@@ -9,15 +9,23 @@ import * as Submission from '@root/models/submission';
 
 const router = express.Router();
 
-router.post('/', async (req: Submission.request, res) => {
-    // Note: the validation checks if the given language is supported
-    const { error } = Submission.validation.validate(req.body);
-    if (error) {
-        res.status(StatusCodes.BAD_REQUEST).json({ message: error.message });
-        return;
-    }
+type languages = keyof typeof LanguageManager;
 
-    const { user, problem, language, code } = req.body;
+/**
+ * Submits the given code by running against the server test cases.
+ * @param user Username of sender.
+ * @param problem Problem being submitted (directory name only).
+ * @param language Programming language being submitted.
+ * @param code Code being submitted.
+ * @returns A promise resolving with the exec output or rejecting with an exec error.
+ */
+const submit = async (
+    user: string,
+    problem: string,
+    language: languages,
+    code: string
+): Promise<string> => {
+    // Helps manage and run the code
     const languageManager = LanguageManager[language];
 
     // File with the test cases
@@ -34,6 +42,10 @@ router.post('/', async (req: Submission.request, res) => {
 
     // Directory to host all test files
     const cacheDirectoryPath = path.join(__dirname, `../cache/${user}-${problem}`);
+
+    // Track return value
+    let throwError: boolean = false;
+    let result: string;
 
     try {
         // Create the user-problem directory to hold all test files
@@ -53,14 +65,55 @@ router.post('/', async (req: Submission.request, res) => {
         await writeFile(unitTestCodePath, unitTestCode);
 
         // Execute the code
-        const stdout = await exec(languageManager.getTestCommand(testCodePath));
-        res.status(StatusCodes.OK).json(JSON.parse(stdout));
+        result = await exec(languageManager.getTestCommand(testCodePath));
     } catch (err) {
-        res.status(StatusCodes.INTERNAL_SERVER_ERROR).json(languageManager.filterError(err));
+        throwError = true;
+        // Return a simplified error message
+        if (typeof err === 'string') {
+            result = JSON.stringify(languageManager.filterError(err));
+        } else if (err.code) {
+            switch (err.code) {
+                case 'ENOENT':
+                    result = JSON.stringify({
+                        message: `Problem directory "${problem}" not found`,
+                    });
+                    break;
+                default:
+                    result = JSON.stringify({
+                        message: `Failed with error code: ${err.code}`,
+                    });
+                    break;
+            }
+        } else {
+            result = JSON.stringify(err);
+        }
     }
 
     // Remove the user-problem directory
     await deleteFile(cacheDirectoryPath);
+
+    if (!throwError) {
+        return Promise.resolve(result);
+    }
+    return Promise.reject(result);
+};
+
+router.post('/', async (req: Submission.request, res) => {
+    // Note: the validation checks if the given language is supported
+    const { error } = Submission.validation.validate(req.body);
+    if (error) {
+        res.status(StatusCodes.BAD_REQUEST).json({ message: error.message });
+        return;
+    }
+
+    const { user, problem, language, code } = req.body;
+
+    try {
+        const result = await submit(user, problem, language, code);
+        res.status(StatusCodes.OK).json(JSON.parse(result));
+    } catch (err) {
+        res.status(StatusCodes.INTERNAL_SERVER_ERROR).json(JSON.parse(err));
+    }
 });
 
 export default router;

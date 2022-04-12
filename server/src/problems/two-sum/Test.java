@@ -75,7 +75,7 @@ public class Test {
     private JSONObject case3() throws Exception {
         // Arrange
         InputObject input = new InputObject(new int[] {2, 8, 6, 4}, 16);
-        int[] expected = {};
+        int[] expected = {-1, -1};
 
         // Act
         UTest uTest = new UTest(3);

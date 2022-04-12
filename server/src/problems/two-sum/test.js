@@ -70,7 +70,7 @@ class Test {
             array: [2, 8, 6, 4],
             target: 16,
         };
-        const expected = [];
+        const expected = [-1, -1];
 
         // Act
         const uTest = new UTest(3);

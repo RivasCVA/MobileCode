@@ -6,4 +6,4 @@ class Solution:
                 second = array[j]
                 if first + second == target:
                     return [first, second]
-        return []
+        return [-1, -1]
