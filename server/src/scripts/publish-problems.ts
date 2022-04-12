@@ -33,12 +33,23 @@ const publish = async () => {
             const dirName = path.substring(path.lastIndexOf('/') + 1);
             const info = await readFile(`${path}/info.json`);
             const problem: request['body'] = JSON.parse(info);
+            // All template code
+            const templateJava = await readFile(`${path}/Template.java`);
+            const parsedTemplateJava = codeToString(templateJava);
+            const templateJavascript = await readFile(`${path}/template.js`);
+            const parsedTemplateJavascript = codeToString(templateJavascript);
+            const templatePython = await readFile(`${path}/template.py`);
+            const parsedTemplatePython = codeToString(templatePython);
 
             // Insert the dynamic data
             problem.description = parsedReadme;
             problem.directory = dirName;
-            // Template is dependent on the language requested
-            problem.template = null;
+            // Template with each supported language
+            problem.template = {
+                java: parsedTemplateJava,
+                javascript: parsedTemplateJavascript,
+                python: parsedTemplatePython,
+            };
 
             const { error } = Problem.validation.validate(problem);
             if (error) {

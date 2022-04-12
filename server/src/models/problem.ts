@@ -24,7 +24,11 @@ export const validation = Joi.object({
     category: Joi.string()
         .valid(...Object.keys(categories))
         .required(),
-    template: Joi.string().allow(null),
+    template: Joi.object({
+        java: Joi.string().required(),
+        javascript: Joi.string().required(),
+        python: Joi.string().required(),
+    }).required(),
     cases: Joi.array().min(1).items(Joi.object()).required(),
 });
 
@@ -50,11 +54,23 @@ export const schema = new mongoose.Schema(
             type: String,
             required: true,
         },
-        template: {
-            type: String,
-            required: false,
-            default: null,
-        },
+        template: new mongoose.Schema(
+            {
+                java: {
+                    type: String,
+                    required: true,
+                },
+                javascript: {
+                    type: String,
+                    required: true,
+                },
+                python: {
+                    type: String,
+                    required: true,
+                },
+            },
+            { versionKey: false, _id: false }
+        ),
         cases: {
             type: [{ type: Object }],
             required: true,
@@ -71,7 +87,11 @@ export interface request extends Request {
         description: string;
         difficulty: keyof typeof difficulties;
         category: keyof typeof categories;
-        template: string;
+        template: {
+            java: string;
+            javascript: string;
+            python: string;
+        };
         cases: Object[];
     };
 }

@@ -14,7 +14,11 @@ const PROBLEMS = [
         description: 'Test description 1.',
         difficulty: 'easy',
         category: 'arrays',
-        template: 'Test template 1',
+        template: {
+            java: 'Test java template 1',
+            javascript: 'Test javascript template 1',
+            python: 'Test python template 1',
+        },
         cases: [
             {
                 input: [1, 2, 3],
@@ -29,7 +33,11 @@ const PROBLEMS = [
         description: 'Test description 2.',
         difficulty: 'hard',
         category: 'strings',
-        template: 'Test template 2',
+        template: {
+            java: 'Test java template 2',
+            javascript: 'Test javascript template 2',
+            python: 'Test python template 2',
+        },
         cases: [
             {
                 input: [1, 2, 3],
@@ -114,7 +122,7 @@ describe(`GET ${URL}`, () => {
         expect(description).toBe(PROBLEMS[0].description);
         expect(difficulty).toBe(PROBLEMS[0].difficulty);
         expect(category).toBe(PROBLEMS[0].category);
-        expect(template).toBe(PROBLEMS[0].template);
+        expect(template).toMatchObject(PROBLEMS[0].template);
         expect(cases).toMatchObject(PROBLEMS[0].cases);
     });
 });
