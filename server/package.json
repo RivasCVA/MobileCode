@@ -10,6 +10,7 @@
     "dev:cache": "rm -rf src/cache && mkdir src/cache",
     "dev:nodemon": "nodemon --watch \"src/**/*\" --ignore \"src/cache/**/*\" --ext \"*\" --exec \"export DEBUG=server,db && ts-node -r tsconfig-paths/register src/index.ts\"",
     "dev:publish-problems": "export DEBUG=server,db && ts-node -r tsconfig-paths/register src/scripts/publish-problems.ts",
+    "dev:test-solution": "ts-node -r tsconfig-paths/register src/scripts/test-solution.ts",
     "prod:build": "rm -rf dist && tsc && npm run prod:copy && npm run prod:cache",
     "prod:copy": "cp -r src/problems dist",
     "prod:cache": "rm -rf dist/cache && mkdir dist/cache",

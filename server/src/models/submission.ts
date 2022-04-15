@@ -1,14 +1,12 @@
 import Joi from 'joi';
 import { Request } from 'express';
-import { LanguageManager } from '@root/util/language';
-
-const languages = LanguageManager;
+import { LanguageManager, Language } from '@root/util/language';
 
 export const validation = Joi.object({
     user: Joi.string().required(),
     problem: Joi.string().required(),
     language: Joi.string()
-        .valid(...Object.keys(languages))
+        .valid(...Object.keys(LanguageManager))
         .required(),
     code: Joi.string().required(),
 });
@@ -18,7 +16,7 @@ export interface request extends Request {
         _id: string;
         user: string;
         problem: string;
-        language: keyof typeof languages;
+        language: Language;
         code: string;
     };
 }

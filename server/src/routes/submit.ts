@@ -4,12 +4,10 @@ import { StatusCodes } from 'http-status-codes';
 import exec from '@root/util/exec';
 import { writeFile, deleteFile, readFile, createDirectory } from '@root/util/fileman';
 import { stringToCode } from '@root/util/strings';
-import { LanguageManager } from '@root/util/language';
+import { LanguageManager, Language } from '@root/util/language';
 import * as Submission from '@root/models/submission';
 
 const router = express.Router();
-
-type languages = keyof typeof LanguageManager;
 
 /**
  * Submits the given code by running against the server test cases.
@@ -19,10 +17,10 @@ type languages = keyof typeof LanguageManager;
  * @param code Code being submitted.
  * @returns A promise resolving with the exec output or rejecting with an exec error.
  */
-const submit = async (
+export const submit = async (
     user: string,
     problem: string,
-    language: languages,
+    language: Language,
     code: string
 ): Promise<string> => {
     // Helps manage and run the code

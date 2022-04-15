@@ -13,7 +13,7 @@ const PROBLEMS_DIRECTORY_PATH = 'src/problems';
  * All existing problems are updated, all new problems are inserted,
  * and all outlier problems are deleted.
  */
-const publish = async () => {
+const publishProblems = async () => {
     const problemsToUpdate: request['body'][] = [];
     const problemsToInsert: request['body'][] = [];
     const problemsToRemove: string[] = [];
@@ -99,7 +99,7 @@ if (require.main === module) {
     (async () => {
         await mongoose.connect(DB_URL, { serverSelectionTimeoutMS: 2000 });
         try {
-            await publish();
+            await publishProblems();
             Debug.server('Success: all problems have been published to the database');
         } catch (err) {
             Debug.server(`${err}`);

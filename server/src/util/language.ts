@@ -188,3 +188,8 @@ export const LanguageManager = {
     javascript: new JavascriptLanguageManager(),
     java: new JavaLanguageManager(),
 };
+
+/**
+ * Type of all supported languages.
+ */
+export type Language = keyof typeof LanguageManager;
