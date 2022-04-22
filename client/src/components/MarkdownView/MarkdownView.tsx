@@ -19,7 +19,8 @@ interface Props {
 const MarkdownView = (props: Props): JSX.Element => {
     const { children } = props;
     const converter = useRef(new showdown.Converter()).current;
-    const html = converter.makeHtml(children);
+    // Adds a `<br/>` tag on double newlines to correctly match markdown behavior
+    const html = converter.makeHtml(children.replace(/\n\n/g, '\n<br/>\n'));
 
     return (
         <View style={styles.container}>

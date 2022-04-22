@@ -47,15 +47,17 @@ const Code = (props: any): JSX.Element => {
     let textToRender = children;
     if (isMultiline) {
         const child = children as string;
-        textToRender = child.substring(0, child.lastIndexOf('\n'));
+        // Removes any auto-added `<br/>` tags
+        textToRender = child.substring(0, child.lastIndexOf('\n')).replace(/<br\/>/g, '');
     }
     return (
         <View
             style={{
                 backgroundColor: '#e7e7e7',
-                paddingHorizontal: 5,
-                paddingVertical: 2,
-                marginTop: isMultiline ? 0 : -5,
+                paddingHorizontal: isMultiline ? 10 : 5,
+                paddingVertical: isMultiline ? 10 : 2,
+                marginTop: isMultiline ? 8 : -5,
+                borderRadius: 8,
                 justifyContent: 'center',
             }}
         >

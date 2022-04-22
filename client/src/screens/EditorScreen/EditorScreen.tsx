@@ -23,7 +23,7 @@ const EditorScreen = (): JSX.Element => {
     const keyboard = useKeyboard();
     const tabBarHeight = useBottomTabBarHeight();
     const codeEditorRef = useRef<TextInput>(null);
-    const [code, setCode] = useState<string>('');
+    const [code, setCode] = useState<string>();
     const [showDescriptionModal, setShowDescriptionModal] = useState<boolean>(false);
     const [problem, setProblem] = useState<Problem>();
 
@@ -57,7 +57,7 @@ const EditorScreen = (): JSX.Element => {
     useEffect(() => {
         const fetch = async () => {
             try {
-                setProblem(await fetchProblem(_id));
+                setProblem(await fetchProblem(_id, 'python'));
             } catch (err) {
                 console.log(err);
             }
@@ -67,7 +67,7 @@ const EditorScreen = (): JSX.Element => {
 
     useEffect(() => {
         if (problem) {
-            // TODO: Set initial code.
+            setCode(stringToCode(problem.template.python));
         }
     }, [problem]);
 
@@ -96,15 +96,17 @@ const EditorScreen = (): JSX.Element => {
                     {stringToCode(problem.description)}
                 </DescriptionModal>
             )}
-            <CodeEditor
-                style={{ ...styles.editor, ...(editorKeyboardOffset || {}) }}
-                language="javascript"
-                syntaxStyle={CodeEditorSyntaxStyles.atomOneDark}
-                initialValue={code}
-                onChange={(newCode) => setCode(newCode)}
-                ref={codeEditorRef}
-                showLineNumbers
-            />
+            {problem && code !== undefined && (
+                <CodeEditor
+                    style={{ ...styles.editor, ...(editorKeyboardOffset || {}) }}
+                    language="python"
+                    syntaxStyle={CodeEditorSyntaxStyles.atomOneDark}
+                    initialValue={code}
+                    onChange={(newCode) => setCode(newCode)}
+                    ref={codeEditorRef}
+                    showLineNumbers
+                />
+            )}
         </View>
     );
 };
@@ -124,8 +126,8 @@ const styles = StyleSheet.create({
         backgroundColor: Colors.PrimaryBackground,
     },
     editor: {
-        fontSize: 20,
-        highlighterLineHeight: 26,
-        inputLineHeight: 26,
+        fontSize: 18,
+        highlighterLineHeight: 24,
+        inputLineHeight: 24,
     } as CodeEditorStyleType,
 });
