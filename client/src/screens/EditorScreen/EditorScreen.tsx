@@ -12,6 +12,7 @@ import CodeEditor, {
 import Colors from 'util/colors';
 import { Strut } from 'components/Layout';
 import IconButton from 'components/IconButton';
+import LoadingOverlay from 'components/LoadingOverlay';
 import DescriptionModal from './components/DescriptionModal';
 import { fetchProblem } from 'util/requests';
 import { Problem } from 'store/problems/types';
@@ -26,6 +27,7 @@ const EditorScreen = (): JSX.Element => {
     const [code, setCode] = useState<string>();
     const [showDescriptionModal, setShowDescriptionModal] = useState<boolean>(false);
     const [problem, setProblem] = useState<Problem>();
+    const [fetchError, setFetchError] = useState<string>();
 
     const { _id, title } = route.params;
 
@@ -37,6 +39,19 @@ const EditorScreen = (): JSX.Element => {
         // To avoid dependency warning
         const handleBackPress = () => {
             navigation.goBack();
+        };
+
+        const handleDescriptionPress = () => {
+            if (problem) {
+                codeEditorRef.current?.blur();
+                setShowDescriptionModal(true);
+            }
+        };
+
+        const handleCompilerPress = () => {
+            if (problem) {
+                //
+            }
         };
 
         navigation.setOptions({
@@ -51,7 +66,7 @@ const EditorScreen = (): JSX.Element => {
                 </View>
             ),
         });
-    }, [navigation, title]);
+    }, [navigation, problem, title]);
 
     // Fetch problem data from API
     useEffect(() => {
@@ -59,6 +74,7 @@ const EditorScreen = (): JSX.Element => {
             try {
                 setProblem(await fetchProblem(_id, 'python'));
             } catch (err) {
+                setFetchError('Error. Please try again later.');
                 console.log(err);
             }
         };
@@ -67,18 +83,10 @@ const EditorScreen = (): JSX.Element => {
 
     useEffect(() => {
         if (problem) {
-            setCode(stringToCode(problem.template.python));
+            // Converts all indentations to be double spaced
+            setCode(stringToCode(problem.template.python).split('    ').join('  '));
         }
     }, [problem]);
-
-    const handleDescriptionPress = () => {
-        codeEditorRef.current?.blur();
-        setShowDescriptionModal(true);
-    };
-
-    const handleCompilerPress = () => {
-        //
-    };
 
     const handleDescriptionModalClose = () => {
         setShowDescriptionModal(false);
@@ -96,7 +104,9 @@ const EditorScreen = (): JSX.Element => {
                     {stringToCode(problem.description)}
                 </DescriptionModal>
             )}
-            {problem && code !== undefined && (
+            {code === undefined ? (
+                <LoadingOverlay errorMessage={fetchError} color={Colors.DarkGray} />
+            ) : (
                 <CodeEditor
                     style={{ ...styles.editor, ...(editorKeyboardOffset || {}) }}
                     language="python"

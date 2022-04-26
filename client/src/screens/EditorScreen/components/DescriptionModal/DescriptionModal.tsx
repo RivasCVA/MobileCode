@@ -38,6 +38,7 @@ const DescriptionModal = (props: Props): JSX.Element => {
     // Only percentage snap points
     const snapPoints: string[] = ['80%'];
     const [currentIndex, setCurrentIndex] = useState<number>(0);
+    const [closable, setClosable] = useState<boolean>(false);
 
     useEffect(() => {
         Animated.timing(backgroundColorAlpha, {
@@ -46,6 +47,16 @@ const DescriptionModal = (props: Props): JSX.Element => {
             useNativeDriver: false,
         }).start();
     }, [backgroundColorAlpha]);
+
+    useEffect(() => {
+        // Adds a small delay before the modal can be closed
+        const timeout = setTimeout(() => {
+            setClosable(true);
+        }, 550);
+        return () => {
+            clearTimeout(timeout);
+        };
+    }, []);
 
     const close = () => {
         Animated.timing(backgroundColorAlpha, {
@@ -58,7 +69,9 @@ const DescriptionModal = (props: Props): JSX.Element => {
     };
 
     const handleOutsidePress = () => {
-        bottomSheetRef.current?.close();
+        if (closable) {
+            bottomSheetRef.current?.close();
+        }
     };
 
     const handleAnimate = (_: number, toIndex: number) => {
