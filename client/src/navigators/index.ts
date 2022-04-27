@@ -19,4 +19,5 @@ export type RootStackParamList = {
         _id: string;
         title: string;
     };
+    Submit: undefined;
 };

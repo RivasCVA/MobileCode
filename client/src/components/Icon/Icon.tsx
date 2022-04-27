@@ -5,7 +5,7 @@ import Colors from 'util/colors';
 
 export type IconTypes = keyof typeof Icons;
 
-type IconSizes = 'small' | 'medium' | 'large';
+type IconSizes = 'xsmall' | 'small' | 'medium' | 'large';
 
 interface Props {
     /**
@@ -44,6 +44,10 @@ const styles = StyleSheet.create({
     container: {
         width: 24,
         height: 24,
+    },
+    xsmall: {
+        width: 16,
+        height: 16,
     },
     small: {
         width: 24,

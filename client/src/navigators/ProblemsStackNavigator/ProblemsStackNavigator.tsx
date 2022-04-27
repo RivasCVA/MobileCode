@@ -2,6 +2,7 @@ import React from 'react';
 import StackNavigator from 'components/StackNavigator';
 import ProblemsScreen from 'screens/ProblemsScreen';
 import EditorScreen from 'screens/EditorScreen';
+import SubmitScreen from 'screens/SubmitScreen';
 
 const ProblemsStackNavigator = (): JSX.Element => {
     return (
@@ -12,6 +13,9 @@ const ProblemsStackNavigator = (): JSX.Element => {
                 },
                 Editor: {
                     component: EditorScreen,
+                },
+                Submit: {
+                    component: SubmitScreen,
                 },
             }}
         />

@@ -188,7 +188,7 @@ const styles = StyleSheet.create({
         marginVertical: 8,
         borderRadius: 16,
         shadowOpacity: 0.25,
-        shadowColor: Colors.Black,
+        shadowColor: Colors.TrueBlack,
         shadowRadius: 4,
         shadowOffset: {
             width: 0,

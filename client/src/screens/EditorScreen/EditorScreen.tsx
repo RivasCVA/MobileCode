@@ -50,7 +50,7 @@ const EditorScreen = (): JSX.Element => {
 
         const handleCompilerPress = () => {
             if (problem) {
-                //
+                navigation.navigate('Submit');
             }
         };
 

@@ -71,7 +71,7 @@ const styles = StyleSheet.create({
         borderRadius: 8,
         backgroundColor: Colors.SecondaryBackground,
         shadowOpacity: 0.25,
-        shadowColor: Colors.Black,
+        shadowColor: Colors.TrueBlack,
         shadowRadius: 4,
         shadowOffset: {
             width: 0,
