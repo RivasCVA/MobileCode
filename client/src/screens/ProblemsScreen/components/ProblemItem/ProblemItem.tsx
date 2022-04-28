@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, TouchableOpacity } from 'react-native';
 import Colors from 'util/colors';
-import ProblemStatus from '../ProblemStatus';
+import ProblemStatus from './ProblemStatus';
 import IconButton from 'components/IconButton';
 import Fonts from 'util/fonts';
 import Difficulties from 'util/difficulties';

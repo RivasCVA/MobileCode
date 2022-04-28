@@ -4,7 +4,7 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from 'navigators';
 import { View, StyleSheet } from 'react-native';
 import IconButton from 'components/IconButton';
-import TestCaseDropdown from './components/TestCaseDropdown';
+import TestCaseList from './components/TestCaseList';
 
 const SubmitScreen = (): JSX.Element => {
     const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
@@ -22,7 +22,37 @@ const SubmitScreen = (): JSX.Element => {
 
     return (
         <View style={styles.container}>
-            <TestCaseDropdown caseNumber={1} />
+            <TestCaseList
+                data={[
+                    {
+                        case: 1,
+                        input: { array: [Array], target: 9 },
+                        output: [2, 7],
+                        expected: [2, 7],
+                        result: true,
+                        stdout: '',
+                        runtime: 0.027099609375,
+                    },
+                    {
+                        case: 2,
+                        input: { array: [Array], target: 6 },
+                        output: [2, 4],
+                        expected: [2, 4],
+                        result: true,
+                        stdout: '',
+                        runtime: 0.00390625,
+                    },
+                    {
+                        case: 3,
+                        input: { array: [Array], target: 16 },
+                        output: [-1, -1],
+                        expected: [-1, -1],
+                        result: true,
+                        stdout: '',
+                        runtime: 0.004150390625,
+                    },
+                ]}
+            />
         </View>
     );
 };
