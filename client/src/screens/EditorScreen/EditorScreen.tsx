@@ -14,7 +14,7 @@ import { Strut } from 'components/Layout';
 import IconButton from 'components/IconButton';
 import LoadingOverlay from 'components/LoadingOverlay';
 import DescriptionModal from './components/DescriptionModal';
-import { fetchProblem } from 'util/requests';
+import { getProblem } from 'util/requests';
 import { Problem } from 'store/problems/types';
 import { stringToCode } from 'util/strings';
 
@@ -72,7 +72,7 @@ const EditorScreen = (): JSX.Element => {
     useEffect(() => {
         const fetch = async () => {
             try {
-                setProblem(await fetchProblem(_id, 'python'));
+                setProblem(await getProblem(_id, 'python'));
             } catch (err) {
                 setFetchError('Error. Please try again later.');
                 console.log(err);

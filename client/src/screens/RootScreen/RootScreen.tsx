@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { fetchProblems, fetchUser } from 'util/requests';
+import { getProblems, getUser } from 'util/requests';
 import { setProblems } from 'store/problems/actions';
 import { setUser } from 'store/user/actions';
 import BottomTabNavigator from 'components/BottomTabNavigator';
@@ -17,9 +17,9 @@ const RootScreen = (): JSX.Element => {
     useEffect(() => {
         const fetch = async () => {
             try {
-                const problems = await fetchProblems();
+                const problems = await getProblems();
                 dispatch(setProblems(problems));
-                const user = await fetchUser('61da63c10af1a7b02c97ddce');
+                const user = await getUser('61da63c10af1a7b02c97ddce');
                 dispatch(setUser(user));
             } catch (err) {
                 console.log(err);
