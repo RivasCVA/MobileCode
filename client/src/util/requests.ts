@@ -65,7 +65,7 @@ export const postSubmission = (user: string, problem: string, language: string, 
     return new Promise<Submission>(async (resolve, reject) => {
         try {
             const response = await axios.post(
-                `${BASE_URL}/submit`,
+                `${BASE_URL}/submission`,
                 {
                     user,
                     problem,

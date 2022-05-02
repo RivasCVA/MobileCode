@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-import { submit } from '@root/routes/submit';
+import { submit } from '@root/routes/submission';
 import { readFile } from '@root/util/fileman';
 import { prompt } from '@root/util/io';
 import { LanguageManager, Language } from '@root/util/language';

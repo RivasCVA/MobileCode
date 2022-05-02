@@ -1,7 +1,7 @@
 import request from 'supertest';
 import app from '@root/app';
 
-const URL = '/api/submit';
+const URL = '/api/submission';
 
 const TEST_PYTHON_CODE =
     '# This is code from the Post request\n\nclass Solution:\n    def two_sum(self, array, target):\n        print("test")\n        for i in range(len(array) - 1):\n            first = array[i]\n            for j in range(i + 1, len(array)):\n                second = array[j]\n                if first + second == target:\n                    return [first, second]\n        return []\n';

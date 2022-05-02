@@ -6,7 +6,7 @@ import { View, StyleSheet } from 'react-native';
 import IconButton from 'components/IconButton';
 import TestCaseList from './components/TestCaseList';
 
-const SubmitScreen = (): JSX.Element => {
+const SubmissionScreen = (): JSX.Element => {
     const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
 
     useLayoutEffect(() => {
@@ -57,7 +57,7 @@ const SubmitScreen = (): JSX.Element => {
     );
 };
 
-export default SubmitScreen;
+export default SubmissionScreen;
 
 const styles = StyleSheet.create({
     container: {
