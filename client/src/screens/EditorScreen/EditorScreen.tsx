@@ -16,7 +16,7 @@ import LoadingOverlay from 'components/LoadingOverlay';
 import DescriptionModal from './components/DescriptionModal';
 import { getProblem } from 'util/requests';
 import { Problem } from 'store/problems/types';
-import { stringToCode } from 'util/strings';
+import { stringToCode, codeToString } from 'util/strings';
 
 const EditorScreen = (): JSX.Element => {
     const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
@@ -49,8 +49,11 @@ const EditorScreen = (): JSX.Element => {
         };
 
         const handleCompilerPress = () => {
-            if (problem) {
-                navigation.navigate('Submission');
+            if (problem && code) {
+                navigation.navigate('Submission', {
+                    directory: problem.directory,
+                    code: codeToString(code),
+                });
             }
         };
 
@@ -66,7 +69,7 @@ const EditorScreen = (): JSX.Element => {
                 </View>
             ),
         });
-    }, [navigation, problem, title]);
+    }, [code, navigation, problem, title]);
 
     // Fetch problem data from API
     useEffect(() => {

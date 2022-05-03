@@ -2,17 +2,13 @@ import { Strut } from 'components/Layout';
 import React from 'react';
 import { FlatList, View, StyleSheet } from 'react-native';
 import TestCaseDropdown from '../TestCaseDropdown';
+import { Submission } from 'store/submission/types';
 
 interface Props {
-    data: {
-        case: number;
-        input: any;
-        output: any;
-        expected: any;
-        result: boolean;
-        stdout: string;
-        runtime: number;
-    }[];
+    /**
+     * List of data for the submission results.
+     */
+    data: Submission[];
 }
 
 const TestCaseList = (props: Props): JSX.Element => {
@@ -23,8 +19,8 @@ const TestCaseList = (props: Props): JSX.Element => {
             <FlatList
                 style={styles.list}
                 data={data}
-                renderItem={({ item }) => {
-                    return <TestCaseDropdown caseNumber={item.case} />;
+                renderItem={({ item: submission }) => {
+                    return <TestCaseDropdown submission={submission} />;
                 }}
                 ItemSeparatorComponent={() => <Strut size={12} />}
                 showsVerticalScrollIndicator={false}

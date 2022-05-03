@@ -17,8 +17,8 @@ type QueryType = {
 
 router.get('/', async (_, res) => {
     try {
-        const attributes = ['name', 'difficulty', 'category'];
-        const problems = await Problem.model.find().select(attributes.join(' '));
+        const include = ['name', 'difficulty', 'category'];
+        const problems = await Problem.model.find().select(include.join(' '));
         res.status(StatusCodes.OK).json(problems);
     } catch (err) {
         res.status(StatusCodes.INTERNAL_SERVER_ERROR).json(err);
@@ -40,7 +40,9 @@ router.get('/:_id', async (req: Request<ParamsType, {}, {}, QueryType>, res) => 
             res.status(StatusCodes.BAD_REQUEST).json({ message });
             return;
         }
-        const problem = await Problem.model.findById(_id);
+        const excludedLanguages = [...languages].filter((lang) => lang !== language);
+        const exclude = excludedLanguages.map((lang) => `-template.${lang}`);
+        const problem = await Problem.model.findById(_id).select(exclude);
         if (!problem) {
             const message = `Could not find problem with id ${_id}`;
             res.status(StatusCodes.BAD_REQUEST).json({ message });

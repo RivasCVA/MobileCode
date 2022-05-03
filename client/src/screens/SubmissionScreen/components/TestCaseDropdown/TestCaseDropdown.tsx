@@ -13,16 +13,14 @@ import Colors from 'util/colors';
 import Fonts from 'util/fonts';
 import TestCaseItem from './TestCaseItem';
 import { Strut } from 'components/Layout';
+import { Submission } from 'store/submission/types';
 
 interface Props {
-    /**
-     * Test case number.
-     */
-    caseNumber: number;
+    submission: Submission;
 }
 
 const TestCaseDropdown = (props: Props): JSX.Element => {
-    const { caseNumber } = props;
+    const { submission } = props;
     const [isOpen, setIsOpen] = useState<boolean>(false);
     const [headerClickable, setHeaderClickable] = useState<boolean>(true);
     const contentHeightAnimation = useRef(new Animated.Value(0)).current;
@@ -64,9 +62,13 @@ const TestCaseDropdown = (props: Props): JSX.Element => {
                 onPress={handleHeaderClick}
             >
                 <View style={styles.header}>
-                    <Icon icon="check" size="small" color={Colors.Green} />
+                    <Icon
+                        icon="check"
+                        size="small"
+                        color={submission.result ? Colors.Green : Colors.Red}
+                    />
                     <Text style={styles.title} numberOfLines={1}>
-                        Test Case {caseNumber}
+                        Test Case {submission.case}
                     </Text>
                     <Icon icon="arrowDown" size="xsmall" color={Colors.White} />
                 </View>
@@ -78,11 +80,29 @@ const TestCaseDropdown = (props: Props): JSX.Element => {
                             contentContainerStyle={styles.contentScrollView}
                             showsVerticalScrollIndicator={false}
                         >
-                            <TestCaseItem title="Input" code="[1, 2, 3, 4]" />
+                            <TestCaseItem
+                                title="Input"
+                                code={JSON.stringify(submission.input, null, 2)}
+                            />
                             <Strut size={8} />
-                            <TestCaseItem title="Your Output" code="[1, 2, 3, 4]" />
+                            <TestCaseItem
+                                title="Your Output"
+                                code={JSON.stringify(submission.output)}
+                            />
                             <Strut size={8} />
-                            <TestCaseItem title="Expected Output" code="[1, 2, 3, 4]" />
+                            <TestCaseItem
+                                title="Expected Output"
+                                code={JSON.stringify(submission.expected)}
+                            />
+                            {submission.stdout.length > 0 && (
+                                <React.Fragment>
+                                    <Strut size={8} />
+                                    <TestCaseItem
+                                        title="Stdout"
+                                        code={submission.stdout.trimEnd()}
+                                    />
+                                </React.Fragment>
+                            )}
                         </ScrollView>
                     </View>
                 </Animated.View>

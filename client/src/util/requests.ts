@@ -61,14 +61,14 @@ export const getUser = async (_id: string) => {
     });
 };
 
-export const postSubmission = (user: string, problem: string, language: string, code: string) => {
-    return new Promise<Submission>(async (resolve, reject) => {
+export const postSubmission = (user: string, directory: string, language: string, code: string) => {
+    return new Promise<Submission[]>(async (resolve, reject) => {
         try {
             const response = await axios.post(
                 `${BASE_URL}/submission`,
                 {
                     user,
-                    problem,
+                    directory,
                     language,
                     code,
                 },
@@ -76,7 +76,7 @@ export const postSubmission = (user: string, problem: string, language: string, 
                     timeout: DEFAULT_TIMEOUT,
                 }
             );
-            const submission = response.data as Submission;
+            const submission = response.data as Submission[];
             if (submission) {
                 resolve(submission);
             } else {

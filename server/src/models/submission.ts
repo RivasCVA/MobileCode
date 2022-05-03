@@ -4,7 +4,7 @@ import { LanguageManager, Language } from '@root/util/language';
 
 export const validation = Joi.object({
     user: Joi.string().required(),
-    problem: Joi.string().required(),
+    directory: Joi.string().required(),
     language: Joi.string()
         .valid(...Object.keys(LanguageManager))
         .required(),
@@ -15,7 +15,7 @@ export interface request extends Request {
     body: {
         _id: string;
         user: string;
-        problem: string;
+        directory: string;
         language: Language;
         code: string;
     };

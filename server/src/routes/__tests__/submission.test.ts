@@ -18,7 +18,7 @@ describe(`POST ${URL}`, () => {
             // Arrange
             const data = {
                 user: 'test-user-1',
-                problem: 'two-sum',
+                directory: 'two-sum',
                 language: 'python',
                 code: TEST_PYTHON_CODE,
             };
@@ -34,7 +34,7 @@ describe(`POST ${URL}`, () => {
             // Arrange
             const data = {
                 user: 'test-user-2',
-                problem: 'two-sum',
+                directory: 'two-sum',
                 language: 'python',
                 code: '',
             };
@@ -50,7 +50,7 @@ describe(`POST ${URL}`, () => {
             // Arrange
             const data = {
                 user: 'test-user-3',
-                problem: 'two-sum',
+                directory: 'two-sum',
                 language: 'python',
                 code: TEST_PYTHON_CODE,
             };
@@ -82,7 +82,7 @@ describe(`POST ${URL}`, () => {
             // Arrange
             const data = {
                 user: 'test-user-1',
-                problem: 'two-sum',
+                directory: 'two-sum',
                 language: 'javascript',
                 code: TEST_JAVASCRIPT_CODE,
             };
@@ -98,7 +98,7 @@ describe(`POST ${URL}`, () => {
             // Arrange
             const data = {
                 user: 'test-user-2',
-                problem: 'two-sum',
+                directory: 'two-sum',
                 language: 'javascript',
                 code: '',
             };
@@ -114,7 +114,7 @@ describe(`POST ${URL}`, () => {
             // Arrange
             const data = {
                 user: 'test-user-3',
-                problem: 'two-sum',
+                directory: 'two-sum',
                 language: 'javascript',
                 code: TEST_JAVASCRIPT_CODE,
             };
@@ -146,7 +146,7 @@ describe(`POST ${URL}`, () => {
             // Arrange
             const data = {
                 user: 'test-user-1',
-                problem: 'two-sum',
+                directory: 'two-sum',
                 language: 'java',
                 code: TEST_JAVA_CODE,
             };
@@ -162,7 +162,7 @@ describe(`POST ${URL}`, () => {
             // Arrange
             const data = {
                 user: 'test-user-2',
-                problem: 'two-sum',
+                directory: 'two-sum',
                 language: 'java',
                 code: '',
             };
@@ -178,7 +178,7 @@ describe(`POST ${URL}`, () => {
             // Arrange
             const data = {
                 user: 'test-user-3',
-                problem: 'two-sum',
+                directory: 'two-sum',
                 language: 'java',
                 code: TEST_JAVA_CODE,
             };

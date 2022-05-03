@@ -122,7 +122,9 @@ describe(`GET ${URL}`, () => {
         expect(description).toBe(PROBLEMS[0].description);
         expect(difficulty).toBe(PROBLEMS[0].difficulty);
         expect(category).toBe(PROBLEMS[0].category);
-        expect(template).toMatchObject(PROBLEMS[0].template);
+        // Expect only a template from the selected language
+        expect(Object.keys(template).length).toBe(1);
+        expect(template.python).toBe(PROBLEMS[0].template.python);
         expect(cases).toMatchObject(PROBLEMS[0].cases);
     });
 });

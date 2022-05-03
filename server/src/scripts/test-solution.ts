@@ -13,7 +13,7 @@ const PROBLEMS_DIRECTORY_PATH = 'src/problems';
  * are working as expected before deploying to production.
  */
 const testSolution = async (): Promise<string> => {
-    const problem = await prompt('Problem: ');
+    const directory = await prompt('Problem directory: ');
     const language = (await prompt('Language: ')) as Language;
 
     // Check if input language is valid
@@ -26,18 +26,18 @@ const testSolution = async (): Promise<string> => {
     // Check if the problem is valid
     let solution: string;
     const solutionFileName = languageManager.getSolutionFileName();
-    const path = `${PROBLEMS_DIRECTORY_PATH}/${problem}/${solutionFileName}`;
+    const path = `${PROBLEMS_DIRECTORY_PATH}/${directory}/${solutionFileName}`;
     try {
         solution = await readFile(path);
     } catch {
-        const note1 = `Note 1: Make sure the problem directory exists, "${problem}"`;
+        const note1 = `Note 1: Make sure the problem directory exists, "${directory}"`;
         const note2 = `Note 2: Make sure the solution file exists, "${solutionFileName}"`;
         const message = `No such path: "${path}"\n${note1}\n${note2}`;
         return Promise.reject(new Error(message));
     }
 
     try {
-        const result = await submit('test-user', problem, language, solution);
+        const result = await submit('test-user', directory, language, solution);
         return Promise.resolve(result);
     } catch (err) {
         return Promise.resolve(err);

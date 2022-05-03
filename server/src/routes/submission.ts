@@ -12,14 +12,14 @@ const router = express.Router();
 /**
  * Submits the given code by running against the server test cases.
  * @param user Username of sender.
- * @param problem Problem being submitted (directory name only).
+ * @param directory Problem directory being submitted.
  * @param language Programming language being submitted.
  * @param code Code being submitted.
  * @returns A promise resolving with the exec output or rejecting with an exec error.
  */
 export const submit = async (
     user: string,
-    problem: string,
+    directory: string,
     language: Language,
     code: string
 ): Promise<string> => {
@@ -29,17 +29,17 @@ export const submit = async (
     // File with the test cases
     const testFilePath = path.join(
         __dirname,
-        `../problems/${problem}/${languageManager.getTestFileName()}`
+        `../problems/${directory}/${languageManager.getTestFileName()}`
     );
 
     // File with the unit test functionality
     const unitTestFilePath = path.join(
         __dirname,
-        `../problems/${problem}/${languageManager.getUnitTestFileName()}`
+        `../problems/${directory}/${languageManager.getUnitTestFileName()}`
     );
 
     // Directory to host all test files
-    const cacheDirectoryPath = path.join(__dirname, `../cache/${user}-${problem}`);
+    const cacheDirectoryPath = path.join(__dirname, `../cache/${user}-${directory}`);
 
     // Track return value
     let throwError: boolean = false;
@@ -73,7 +73,7 @@ export const submit = async (
             switch (err.code) {
                 case 'ENOENT':
                     result = JSON.stringify({
-                        message: `Problem directory "${problem}" not found`,
+                        message: `Problem directory "${directory}" not found`,
                     });
                     break;
                 default:
@@ -104,10 +104,10 @@ router.post('/', async (req: Submission.request, res) => {
         return;
     }
 
-    const { user, problem, language, code } = req.body;
+    const { user, directory, language, code } = req.body;
 
     try {
-        const result = await submit(user, problem, language, code);
+        const result = await submit(user, directory, language, code);
         res.status(StatusCodes.OK).json(JSON.parse(result));
     } catch (err) {
         res.status(StatusCodes.INTERNAL_SERVER_ERROR).json(JSON.parse(err));

@@ -1,13 +1,23 @@
-import React, { useLayoutEffect } from 'react';
-import { useNavigation } from '@react-navigation/native';
+import React, { useEffect, useLayoutEffect, useState } from 'react';
+import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from 'navigators';
 import { View, StyleSheet } from 'react-native';
 import IconButton from 'components/IconButton';
 import TestCaseList from './components/TestCaseList';
+import { Submission } from 'store/submission/types';
+import { postSubmission } from 'util/requests';
+import Colors from 'util/colors';
+import { useSelector } from 'react-redux';
+import { selectUser } from 'store/user/selectors';
 
 const SubmissionScreen = (): JSX.Element => {
     const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
+    const route = useRoute<RouteProp<RootStackParamList, 'Submission'>>();
+    const [submission, setSubmission] = useState<Submission[]>([]);
+
+    const { username } = useSelector(selectUser);
+    const { directory, code } = route.params;
 
     useLayoutEffect(() => {
         const handleBackPress = () => {
@@ -20,39 +30,21 @@ const SubmissionScreen = (): JSX.Element => {
         });
     }, [navigation]);
 
+    useEffect(() => {
+        const fetch = async () => {
+            try {
+                // TODO: Add `language` to User API.
+                setSubmission(await postSubmission(username, directory, 'python', code));
+            } catch (err) {
+                console.log(err);
+            }
+        };
+        fetch();
+    }, [code, username, directory]);
+
     return (
         <View style={styles.container}>
-            <TestCaseList
-                data={[
-                    {
-                        case: 1,
-                        input: { array: [Array], target: 9 },
-                        output: [2, 7],
-                        expected: [2, 7],
-                        result: true,
-                        stdout: '',
-                        runtime: 0.027099609375,
-                    },
-                    {
-                        case: 2,
-                        input: { array: [Array], target: 6 },
-                        output: [2, 4],
-                        expected: [2, 4],
-                        result: true,
-                        stdout: '',
-                        runtime: 0.00390625,
-                    },
-                    {
-                        case: 3,
-                        input: { array: [Array], target: 16 },
-                        output: [-1, -1],
-                        expected: [-1, -1],
-                        result: true,
-                        stdout: '',
-                        runtime: 0.004150390625,
-                    },
-                ]}
-            />
+            <TestCaseList data={submission} />
         </View>
     );
 };
@@ -65,5 +57,6 @@ const styles = StyleSheet.create({
         height: '100%',
         paddingHorizontal: 32,
         paddingVertical: 24,
+        backgroundColor: Colors.PrimaryBackground,
     },
 });

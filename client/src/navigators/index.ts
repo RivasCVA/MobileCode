@@ -16,8 +16,15 @@
 export type RootStackParamList = {
     Problems: undefined;
     Editor: {
+        /** Problem _id. */
         _id: string;
+        /** Problem title. */
         title: string;
     };
-    Submission: undefined;
+    Submission: {
+        /** Problem directory. */
+        directory: string;
+        /** User code. */
+        code: string;
+    };
 };
