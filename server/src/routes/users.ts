@@ -26,13 +26,15 @@ router.post('/', async (req: User.request, res) => {
         return;
     }
 
-    const { email, username, favorites, completed } = req.body;
+    const { email, username, favorites, completed, language, theme } = req.body;
 
     const user = new User.model({
         email,
         username,
         favorites,
         completed,
+        language,
+        theme,
     });
 
     try {

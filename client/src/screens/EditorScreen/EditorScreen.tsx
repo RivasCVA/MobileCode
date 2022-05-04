@@ -17,6 +17,9 @@ import DescriptionModal from './components/DescriptionModal';
 import { getProblem } from 'util/requests';
 import { Problem } from 'store/problems/types';
 import { stringToCode, codeToString } from 'util/strings';
+import { useSelector } from 'react-redux';
+import { selectUser } from 'store/user/selectors';
+import Languages from 'util/languages';
 
 const EditorScreen = (): JSX.Element => {
     const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
@@ -29,6 +32,7 @@ const EditorScreen = (): JSX.Element => {
     const [problem, setProblem] = useState<Problem>();
     const [fetchError, setFetchError] = useState<string>();
 
+    const { language, theme } = useSelector(selectUser);
     const { _id, title } = route.params;
 
     const editorKeyboardOffset = keyboard.keyboardShown
@@ -112,8 +116,10 @@ const EditorScreen = (): JSX.Element => {
             ) : (
                 <CodeEditor
                     style={{ ...styles.editor, ...(editorKeyboardOffset || {}) }}
-                    language="python"
-                    syntaxStyle={CodeEditorSyntaxStyles.atomOneDark}
+                    language={language as Languages}
+                    syntaxStyle={
+                        CodeEditorSyntaxStyles[theme as keyof typeof CodeEditorSyntaxStyles]
+                    }
                     initialValue={code}
                     onChange={(newCode) => setCode(newCode)}
                     ref={codeEditorRef}

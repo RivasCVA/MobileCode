@@ -8,6 +8,8 @@ export interface User {
     username: string;
     favorites: string[];
     completed: string[];
+    language: string;
+    theme: string;
 }
 
 interface SetUserAction {

@@ -6,6 +6,8 @@ const initialState: User = {
     username: '',
     favorites: [],
     completed: [],
+    language: '',
+    theme: '',
 };
 
 const userReducer = (state = initialState, action: UserActionType): User => {

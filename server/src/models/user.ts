@@ -7,6 +7,8 @@ export const validation = Joi.object({
     username: Joi.string().max(255).required(),
     favorites: Joi.array().items(Joi.string()).unique(),
     completed: Joi.array().items(Joi.string()).unique(),
+    language: Joi.string().max(255).required(),
+    theme: Joi.string().max(255).required(),
 });
 
 export const schema = new mongoose.Schema({
@@ -26,6 +28,14 @@ export const schema = new mongoose.Schema({
         type: [{ type: String }],
         default: [],
     },
+    language: {
+        type: String,
+        default: 'python',
+    },
+    theme: {
+        type: String,
+        default: 'github',
+    },
 });
 
 export interface request extends Request {
@@ -35,6 +45,8 @@ export interface request extends Request {
         username: string;
         favorites: string[];
         completed: string[];
+        language: string;
+        theme: string;
     };
 }
 

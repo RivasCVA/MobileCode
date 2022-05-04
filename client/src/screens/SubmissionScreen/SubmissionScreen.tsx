@@ -16,7 +16,7 @@ const SubmissionScreen = (): JSX.Element => {
     const route = useRoute<RouteProp<RootStackParamList, 'Submission'>>();
     const [submission, setSubmission] = useState<Submission[]>([]);
 
-    const { username } = useSelector(selectUser);
+    const { username, language } = useSelector(selectUser);
     const { directory, code } = route.params;
 
     useLayoutEffect(() => {
@@ -33,14 +33,13 @@ const SubmissionScreen = (): JSX.Element => {
     useEffect(() => {
         const fetch = async () => {
             try {
-                // TODO: Add `language` to User API.
-                setSubmission(await postSubmission(username, directory, 'python', code));
+                setSubmission(await postSubmission(username, directory, language, code));
             } catch (err) {
                 console.log(err);
             }
         };
         fetch();
-    }, [code, username, directory]);
+    }, [code, username, directory, language]);
 
     return (
         <View style={styles.container}>

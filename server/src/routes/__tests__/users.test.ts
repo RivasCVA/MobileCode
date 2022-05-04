@@ -13,6 +13,8 @@ const USERS = [
         username: 'test-username',
         favorites: ['zzzz12345678901234567890', 'yyyy12345678901234567890'],
         completed: ['xxxx12345678901234567890'],
+        language: 'test-language',
+        theme: 'test-theme',
     },
 ];
 
@@ -60,16 +62,18 @@ describe(`GET ${URL}`, () => {
         // Act
         const response = await request(app).get(`${URL}/${USERS[0]._id}`);
         const { body: user } = response;
-        const { email, username, favorites, completed } = user;
+        const { email, username, favorites, completed, language, theme } = user;
 
         // Assert
         // Expect each problem to have a fixed amount of properties
-        expect(Object.keys(user).length).toBe(6);
+        expect(Object.keys(user).length).toBe(8);
         // Expect all properties to have a value
         expect(email).toBe(USERS[0].email);
         expect(username).toBe(USERS[0].username);
         expect(favorites).toEqual(USERS[0].favorites);
         expect(completed).toEqual(USERS[0].completed);
+        expect(language).toBe(USERS[0].language);
+        expect(theme).toBe(USERS[0].theme);
     });
 });
 
@@ -98,6 +102,8 @@ describe(`POST ${URL}`, () => {
             username: 'test-username',
             favorites: ['pppp12345678901234567890', 'uuuu12345678901234567890'],
             completed: ['mmmm12345678901234567890'],
+            language: 'test-language',
+            theme: 'test-theme',
         };
 
         // Act
@@ -114,6 +120,8 @@ describe(`POST ${URL}`, () => {
             username: 'test-username',
             favorites: ['pppp12345678901234567890', 'uuuu12345678901234567890'],
             completed: ['mmmm12345678901234567890'],
+            language: 'test-language',
+            theme: 'test-theme',
         };
 
         // Act
@@ -129,23 +137,29 @@ describe(`POST ${URL}`, () => {
         const testUsername = 'Test User Name';
         const testFavorites = ['pppp12345678901234567890', 'uuuu12345678901234567890'];
         const testCompleted = ['mmmm12345678901234567890'];
+        const testLanguage = 'test-language';
+        const testTheme = 'test-theme';
 
         const data = {
             email: testEmail,
             username: testUsername,
             favorites: testFavorites,
             completed: testCompleted,
+            language: testLanguage,
+            theme: testTheme,
         };
 
         // Act
         const response = await request(app).post(URL).send(data);
         const { body } = response;
-        const { email, username, favorites, completed } = body;
+        const { email, username, favorites, completed, language, theme } = body;
 
         // Assert
         expect(email).toBe(testEmail);
         expect(username).toBe(testUsername);
         expect(favorites).toEqual(testFavorites);
         expect(completed).toEqual(testCompleted);
+        expect(language).toBe(testLanguage);
+        expect(theme).toBe(testTheme);
     });
 });
