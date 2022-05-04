@@ -59,9 +59,12 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         width: '100%',
         height: '100%',
+        paddingHorizontal: 40,
         backgroundColor: HexToRGB(Colors.White, 0.1),
     },
     errorMessage: {
+        width: '100%',
+        textAlign: 'center',
         fontFamily: Fonts.PoppinsRegular,
         fontSize: 18,
         color: Colors.DarkGray,

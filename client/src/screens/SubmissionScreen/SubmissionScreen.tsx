@@ -10,11 +10,13 @@ import { postSubmission } from 'util/requests';
 import Colors from 'util/colors';
 import { useSelector } from 'react-redux';
 import { selectUser } from 'store/user/selectors';
+import LoadingOverlay from 'components/LoadingOverlay';
 
 const SubmissionScreen = (): JSX.Element => {
     const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
     const route = useRoute<RouteProp<RootStackParamList, 'Submission'>>();
     const [submission, setSubmission] = useState<Submission[]>([]);
+    const [fetchError, setFetchError] = useState<string>();
 
     const { username, language } = useSelector(selectUser);
     const { directory, code } = route.params;
@@ -35,6 +37,7 @@ const SubmissionScreen = (): JSX.Element => {
             try {
                 setSubmission(await postSubmission(username, directory, language, code));
             } catch (err) {
+                setFetchError('Error submitting code.\nPlease try again later.');
                 console.log(err);
             }
         };
@@ -43,7 +46,11 @@ const SubmissionScreen = (): JSX.Element => {
 
     return (
         <View style={styles.container}>
-            <TestCaseList data={submission} />
+            {submission.length === 0 ? (
+                <LoadingOverlay errorMessage={fetchError} />
+            ) : (
+                <TestCaseList data={submission} />
+            )}
         </View>
     );
 };

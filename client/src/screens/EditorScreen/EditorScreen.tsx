@@ -79,14 +79,14 @@ const EditorScreen = (): JSX.Element => {
     useEffect(() => {
         const fetch = async () => {
             try {
-                setProblem(await getProblem(_id, 'python'));
+                setProblem(await getProblem(_id, language as Languages));
             } catch (err) {
-                setFetchError('Error. Please try again later.');
+                setFetchError('Error.\nPlease try again later.');
                 console.log(err);
             }
         };
         fetch();
-    }, [_id]);
+    }, [_id, language]);
 
     useEffect(() => {
         if (problem) {
