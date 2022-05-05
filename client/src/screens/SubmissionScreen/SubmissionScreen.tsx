@@ -27,17 +27,23 @@ const SubmissionScreen = (): JSX.Element => {
         };
 
         navigation.setOptions({
-            title: 'Submit Code',
-            headerLeft: () => <IconButton icon="back" onPress={handleBackPress} />,
+            title: 'Submit',
+            headerLeft: () => (
+                <IconButton
+                    disabled={submission.length === 0 && fetchError === undefined}
+                    icon="close"
+                    onPress={handleBackPress}
+                />
+            ),
         });
-    }, [navigation]);
+    }, [fetchError, navigation, submission.length]);
 
     useEffect(() => {
         const fetch = async () => {
             try {
                 setSubmission(await postSubmission(username, directory, language, code));
             } catch (err) {
-                setFetchError('Error submitting code.\nPlease try again later.');
+                setFetchError('Error submitting code.');
                 console.log(err);
             }
         };

@@ -25,6 +25,7 @@ export const ButtonIcons = {
     settings: Icons.gear,
     search: Icons.search,
     filter: Icons.tune,
+    close: Icons.close,
 };
 
 export default Icons;

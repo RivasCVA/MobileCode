@@ -85,7 +85,7 @@ const styles = StyleSheet.create({
         height: '100%',
     },
     disabled: {
-        opacity: 0.85,
+        opacity: 0.7,
     },
     small: {
         width: 24,

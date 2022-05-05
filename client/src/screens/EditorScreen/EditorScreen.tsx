@@ -91,9 +91,13 @@ const EditorScreen = (): JSX.Element => {
     useEffect(() => {
         if (problem) {
             // Converts all indentations to be double spaced
-            setCode(stringToCode(problem.template.python).split('    ').join('  '));
+            setCode(
+                stringToCode(problem.template[language as Languages])
+                    .split('    ')
+                    .join('  ')
+            );
         }
-    }, [problem]);
+    }, [language, problem]);
 
     const handleDescriptionModalClose = () => {
         setShowDescriptionModal(false);
