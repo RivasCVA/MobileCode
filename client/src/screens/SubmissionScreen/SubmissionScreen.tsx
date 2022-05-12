@@ -22,10 +22,24 @@ const SubmissionScreen = (): JSX.Element => {
     const { directory, code } = route.params;
 
     useLayoutEffect(() => {
+        const hideTabBar = () => {
+            navigation.getParent()?.setOptions({
+                tabBarStyle: { display: 'none' },
+            });
+        };
+
+        const showTabBar = () => {
+            navigation.getParent()?.setOptions({
+                tabBarStyle: { display: null },
+            });
+        };
+
         const handleBackPress = () => {
+            showTabBar();
             navigation.goBack();
         };
 
+        hideTabBar();
         navigation.setOptions({
             title: 'Submit',
             headerLeft: () => (

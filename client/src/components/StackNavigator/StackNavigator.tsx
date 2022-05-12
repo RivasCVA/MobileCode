@@ -1,5 +1,9 @@
 import React from 'react';
-import { createStackNavigator, StackNavigationOptions } from '@react-navigation/stack';
+import {
+    CardStyleInterpolators,
+    createStackNavigator,
+    StackNavigationOptions,
+} from '@react-navigation/stack';
 import { ParamListBase, RouteProp } from '@react-navigation/core';
 import Colors from 'util/colors';
 import Fonts from 'util/fonts';
@@ -46,6 +50,23 @@ interface Props {
     screens: ScreensType;
 
     /**
+     * All modal screens in each stack.
+     *
+     * Sample usage:
+     * ```
+     * {
+     *   ScreenName: {
+     *     component: ScreenComponent,
+     *     ...
+     *   },
+     *   ...
+     * }
+     * ```
+     * Notice how the keys are the screen names.
+     */
+    modals?: ScreensType;
+
+    /**
      * Default options for all screens.
      */
     screenOptions?: ScreenOptionsType;
@@ -55,7 +76,7 @@ interface Props {
  * Wrapper for react native's stack navigator.
  */
 const StackNavigator = (props: Props): JSX.Element => {
-    const { screens, screenOptions } = props;
+    const { screens, modals, screenOptions } = props;
 
     return (
         <Stack.Navigator
@@ -81,9 +102,29 @@ const StackNavigator = (props: Props): JSX.Element => {
                     : {}),
             })}
         >
-            {Object.entries(screens).map(([name, { component, options }]) => (
-                <Stack.Screen key={name} name={name} component={component} options={options} />
-            ))}
+            <Stack.Group>
+                {Object.entries(screens).map(([name, { component, options }]) => (
+                    <Stack.Screen key={name} name={name} component={component} options={options} />
+                ))}
+            </Stack.Group>
+            {modals && (
+                <Stack.Group
+                    screenOptions={{
+                        headerMode: 'screen',
+                        gestureEnabled: false,
+                        cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS,
+                    }}
+                >
+                    {Object.entries(modals).map(([name, { component, options }]) => (
+                        <Stack.Screen
+                            key={name}
+                            name={name}
+                            component={component}
+                            options={options}
+                        />
+                    ))}
+                </Stack.Group>
+            )}
         </Stack.Navigator>
     );
 };

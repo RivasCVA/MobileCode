@@ -14,6 +14,8 @@ const ProblemsStackNavigator = (): JSX.Element => {
                 Editor: {
                     component: EditorScreen,
                 },
+            }}
+            modals={{
                 Submission: {
                     component: SubmissionScreen,
                 },
