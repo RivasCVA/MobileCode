@@ -52,5 +52,5 @@ npm run ios
 Run the app for a specific iOS simulator:
 
 ```
-npm run ios -- --simulator="iPhone 13 Pro"
+npm run ios -- --simulator="iPhone 14 Pro"
 ```
