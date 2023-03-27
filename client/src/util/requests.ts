@@ -83,7 +83,11 @@ export const postSubmission = (user: string, directory: string, language: string
                 reject('POST submission error: cast error');
             }
         } catch (err) {
-            reject(`POST submission error: ${err}`);
+            if (axios.isAxiosError(err)) {
+                reject(err.response?.data);
+            } else {
+                reject(`POST submission error: ${err}`);
+            }
         }
     });
 };
